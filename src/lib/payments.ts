@@ -9,42 +9,46 @@
 // Switching between modes is a pure environment change — no code edits.
 import 'server-only'
 import crypto from 'node:crypto'
+import { resolveIntegration } from '@/lib/integrations'
 
 export type PaymentMode = 'stripe_live' | 'stripe_test' | 'sandbox'
 
-export function getStripeSecretKey(): string | null {
-  const key = process.env.STRIPE_SECRET_KEY?.trim()
-  return key ? key : null
+/** Stripe secret key — admin settings (DB) override the environment. */
+export async function getStripeSecretKey(): Promise<string | null> {
+  const { value } = await resolveIntegration('STRIPE_SECRET_KEY')
+  return value
 }
 
-export function getPaymentMode(): PaymentMode {
-  const key = getStripeSecretKey()
+export async function getPaymentMode(): Promise<PaymentMode> {
+  const key = await getStripeSecretKey()
   if (!key) return 'sandbox'
   return key.startsWith('sk_live') ? 'stripe_live' : 'stripe_test'
 }
 
-export function isWebhookConfigured(): boolean {
-  return Boolean(process.env.STRIPE_WEBHOOK_SECRET?.trim())
+export async function isWebhookConfigured(): Promise<boolean> {
+  const { value } = await resolveIntegration('STRIPE_WEBHOOK_SECRET')
+  return Boolean(value)
 }
 
-export function isStripeConfigured(): boolean {
-  return getPaymentMode() !== 'sandbox'
+export async function isStripeConfigured(): Promise<boolean> {
+  return (await getPaymentMode()) !== 'sandbox'
 }
 
-export function isLiveMode(): boolean {
-  return getPaymentMode() === 'stripe_live'
+export async function isLiveMode(): Promise<boolean> {
+  return (await getPaymentMode()) === 'stripe_live'
 }
 
 /** Summary used by the admin panel (auth/me) and diagnostics. */
-export function getPaymentsStatus(): {
+export async function getPaymentsStatus(): Promise<{
   mode: PaymentMode
   stripeConfigured: boolean
   webhookConfigured: boolean
-} {
+}> {
+  const [mode, webhookConfigured] = await Promise.all([getPaymentMode(), isWebhookConfigured()])
   return {
-    mode: getPaymentMode(),
-    stripeConfigured: isStripeConfigured(),
-    webhookConfigured: isWebhookConfigured(),
+    mode,
+    stripeConfigured: mode !== 'sandbox',
+    webhookConfigured,
   }
 }
 

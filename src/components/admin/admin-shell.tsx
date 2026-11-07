@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
+  BookOpen,
   CalendarCheck,
   Clapperboard,
   CreditCard,
@@ -75,6 +76,7 @@ const NAV_ITEMS = [
   { href: '/admin/faqs', label: 'Sacred Questions', icon: MessagesSquare, exact: false },
   { href: '/admin/subscribers', label: 'Subscribers', icon: Users, exact: false },
   { href: '/admin/emails', label: 'Email log', icon: Mail, exact: false },
+  { href: '/admin/api-docs', label: 'API & AI Providers', icon: BookOpen, exact: false },
   { href: '/admin/settings', label: 'Settings', icon: Settings, exact: false },
 ]
 

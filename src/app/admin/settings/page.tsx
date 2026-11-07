@@ -278,7 +278,18 @@ export default function AdminSettingsPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !rows ? (
-            <TableRowsSkeleton cols={3} />
+            <Table>
+              <TableHeader>
+                <TableRow className="border-[#D0A56A]/30">
+                  <TableHead className="w-56 text-[#7D0A16]/70">Key</TableHead>
+                  <TableHead className="text-[#7D0A16]/70">Value</TableHead>
+                  <TableHead className="w-44 text-[#7D0A16]/70">Updated</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRowsSkeleton cols={3} rows={4} />
+              </TableBody>
+            </Table>
           ) : rows && rows.length === 0 ? (
             <EmptyState
               title="No settings stored yet"

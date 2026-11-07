@@ -83,7 +83,7 @@ export async function createGenerationJobForBooking(
     },
   })
 
-  if (!isHeyGenConfigured()) {
+  if (!(await isHeyGenConfigured())) {
     await db.generationJob.update({
       where: { id: job.id },
       data: { error: 'Waiting for provider credentials (HEYGEN_API_KEY). Job stays queued.' },
@@ -101,7 +101,7 @@ export async function dispatchGenerationJob(jobId: string): Promise<{ ok: boolea
   if (job.status === 'completed') return { ok: true }
   if (job.status === 'submitted' && job.providerJobId) return { ok: true } // already dispatched
 
-  if (!isHeyGenConfigured()) {
+  if (!(await isHeyGenConfigured())) {
     await db.generationJob.update({
       where: { id: job.id },
       data: { error: 'Waiting for provider credentials (HEYGEN_API_KEY).' },

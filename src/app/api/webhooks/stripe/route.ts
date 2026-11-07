@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { markOrderPaid } from '@/lib/fulfillment'
+import { getStripeForWebhook, getStripeWebhookSecret } from '@/lib/stripe'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,14 +9,14 @@ export const dynamic = 'force-dynamic'
 // Verifies the signature (required control per the brief) and is idempotent:
 // duplicate deliveries never double-charge or double-fulfill.
 export async function POST(req: NextRequest) {
-  const secret = process.env.STRIPE_WEBHOOK_SECRET
+  const secret = await getStripeWebhookSecret()
   const signature = req.headers.get('stripe-signature')
 
   if (!secret || !signature) {
     return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 })
   }
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
+  const stripe = await getStripeForWebhook()
   const body = await req.text()
 
   let event: Stripe.Event

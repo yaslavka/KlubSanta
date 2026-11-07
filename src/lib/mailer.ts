@@ -3,6 +3,7 @@
 // "skipped_no_provider" so support can still see what should have been sent.
 import 'server-only'
 import { db } from '@/lib/db'
+import { resolveIntegration } from '@/lib/integrations'
 
 type MailInput = {
   to: string
@@ -34,14 +35,17 @@ export async function sendMail(input: MailInput): Promise<void> {
   let providerId: string | null = null
   let error: string | null = null
 
-  const apiKey = process.env.RESEND_API_KEY
+  const [{ value: apiKey }, { value: fromSetting }] = await Promise.all([
+    resolveIntegration('RESEND_API_KEY'),
+    resolveIntegration('EMAIL_FROM'),
+  ])
   if (!apiKey) {
     status = 'skipped_no_provider'
   } else {
     try {
       const { Resend } = await import('resend')
       const resend = new Resend(apiKey)
-      const from = process.env.EMAIL_FROM || 'Klub Santa <onboarding@resend.dev>'
+      const from = fromSetting || 'Klub Santa <onboarding@resend.dev>'
       const result = await resend.emails.send({
         from,
         to: input.to,

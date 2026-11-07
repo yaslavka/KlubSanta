@@ -1,9 +1,35 @@
-// HeyGen video generation client (real API path — activates when HEYGEN_API_KEY is set).
+// HeyGen video generation client (real API path — activates when an API key
+// is configured via the admin panel or the environment).
 // Per the brief: asynchronous personalized video rendering, webhook-driven completion.
 import 'server-only'
+import { resolveIntegration } from '@/lib/integrations'
 
-export function isHeyGenConfigured(): boolean {
-  return Boolean(process.env.HEYGEN_API_KEY)
+export type HeyGenConfig = {
+  apiKey: string | null
+  avatarId: string | null
+  voiceId: string | null
+  testMode: boolean
+}
+
+/** Reads HeyGen credentials from admin settings (DB) with env fallback. */
+export async function getHeyGenConfig(): Promise<HeyGenConfig> {
+  const [apiKey, avatarId, voiceId, mode] = await Promise.all([
+    resolveIntegration('HEYGEN_API_KEY'),
+    resolveIntegration('HEYGEN_SANTA_AVATAR_ID'),
+    resolveIntegration('HEYGEN_SANTA_VOICE_ID'),
+    resolveIntegration('HEYGEN_MODE'),
+  ])
+  return {
+    apiKey: apiKey.value,
+    avatarId: avatarId.value,
+    voiceId: voiceId.value,
+    // Test renders by default (free of video-credit charges); 'live' switches to real renders.
+    testMode: (mode.value || 'test').toLowerCase() !== 'live',
+  }
+}
+
+export async function isHeyGenConfigured(): Promise<boolean> {
+  return Boolean((await getHeyGenConfig()).apiKey)
 }
 
 type SubmitResult = { ok: true; providerJobId: string } | { ok: false; error: string }
@@ -13,12 +39,10 @@ export async function submitHeyGenVideo(opts: {
   title: string
   bookingReference: string
 }): Promise<SubmitResult> {
-  const apiKey = process.env.HEYGEN_API_KEY
-  if (!apiKey) return { ok: false, error: 'HEYGEN_API_KEY not configured' }
+  const config = await getHeyGenConfig()
+  if (!config.apiKey) return { ok: false, error: 'HEYGEN_API_KEY not configured' }
 
-  const avatarId = process.env.HEYGEN_SANTA_AVATAR_ID
-  const voiceId = process.env.HEYGEN_SANTA_VOICE_ID
-  if (!avatarId || !voiceId) {
+  if (!config.avatarId || !config.voiceId) {
     return {
       ok: false,
       error: 'HEYGEN_SANTA_AVATAR_ID / HEYGEN_SANTA_VOICE_ID not configured (asset compatibility check required by the brief)',
@@ -29,7 +53,7 @@ export async function submitHeyGenVideo(opts: {
     const res = await fetch('https://api.heygen.com/v2/video/generate', {
       method: 'POST',
       headers: {
-        'X-Api-Key': apiKey,
+        'X-Api-Key': config.apiKey,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -37,20 +61,20 @@ export async function submitHeyGenVideo(opts: {
           {
             character: {
               type: 'avatar',
-              avatar_id: avatarId,
+              avatar_id: config.avatarId,
               avatar_style: 'normal',
             },
             voice: {
               type: 'text',
               input_text: opts.scriptText,
-              voice_id: voiceId,
+              voice_id: config.voiceId,
               speed: 1.0,
             },
             background: { type: 'color', value: '#132118' },
           },
         ],
         dimension: { width: 1280, height: 720 },
-        test: process.env.HEYGEN_MODE === 'live' ? false : true,
+        test: config.testMode,
         caption: false,
         title: opts.title,
       }),

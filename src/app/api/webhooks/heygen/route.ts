@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { completeGenerationJob, dispatchGenerationJob } from '@/lib/fulfillment'
 import type { HeyGenWebhookEvent } from '@/lib/heygen'
+import { resolveIntegration } from '@/lib/integrations'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,7 +9,7 @@ export const dynamic = 'force-dynamic'
 // Acknowledges quickly and resolves durable jobs (dispatcher pattern per the brief).
 // Protected with a shared secret header when HEYGEN_WEBHOOK_SECRET is set.
 export async function POST(req: NextRequest) {
-  const expected = process.env.HEYGEN_WEBHOOK_SECRET
+  const { value: expected } = await resolveIntegration('HEYGEN_WEBHOOK_SECRET')
   if (expected && req.headers.get('x-heygen-secret') !== expected) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

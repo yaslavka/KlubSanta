@@ -41,7 +41,11 @@ by environment variables — no code changes:
 | **Stripe LIVE** | `STRIPE_SECRET_KEY=sk_live_…` | Battle mode. Real charges. Verify the live webhook secret first. |
 
 The active mode is always visible in the admin panel (sidebar badge + Settings →
-"Active payment mode" card with a go-live checklist).
+"Active payment mode" card with a go-live checklist). Credentials can be pasted
+directly in the admin panel — **API & AI Providers** (`/admin/api-docs`) — stored
+server-side and masked in every response; environment variables act as fallback
+(admin-panel values win). Editing integration credentials is restricted to the
+`owner` role.
 
 ### How a payment is fulfilled (identical in all modes)
 
@@ -76,6 +80,10 @@ the success page verifies the session via `POST /api/checkout/confirm`
 - **Sacred Questions** — FAQ management rendered on the landing page
 - **Subscribers** — "North Pole Dispatch" newsletter list
 - **Email log** — every outbound message with provider status
+- **API & AI Providers** (`/admin/api-docs`) — full API reference (storefront,
+  webhooks, admin) + paste-in credentials for the AI video provider (HeyGen:
+  API key, Santa Avatar ID, Voice ID, webhook secret, render mode), Stripe and
+  Resend — with "where to get each value" hints and webhook URLs to register
 - **Settings** — key/value site settings + payment mode & go-live checklist
 
 ## Migrating to Supabase Postgres (per technical brief)

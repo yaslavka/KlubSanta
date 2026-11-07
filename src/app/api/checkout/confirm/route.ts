@@ -4,7 +4,6 @@ import { getStripe } from '@/lib/stripe'
 import { isStripeConfigured } from '@/lib/payments'
 import { markOrderPaid } from '@/lib/fulfillment'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
-
 export const dynamic = 'force-dynamic'
 
 const schema = z.object({ sessionId: z.string().min(10).max(300) })
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Too many attempts' }, { status: 429 })
   }
 
-  if (!isStripeConfigured()) {
+  if (!(await isStripeConfigured())) {
     return NextResponse.json({ error: 'Stripe is not configured' }, { status: 503 })
   }
 

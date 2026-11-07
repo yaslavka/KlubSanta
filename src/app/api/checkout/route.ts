@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getStripe, getAppUrl } from '@/lib/stripe'
-import { createSandboxPaymentToken, getPaymentMode, isStripeConfigured } from '@/lib/payments'
+import {
+  createSandboxPaymentToken,
+  getPaymentMode,
+  isStripeConfigured,
+} from '@/lib/payments'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
@@ -18,7 +22,7 @@ const schema = z.object({ bookingId: z.string().min(10) })
 // mode = sandbox (no STRIPE_SECRET_KEY)
 //   → built-in test gateway page at /checkout/sandbox. It exercises the exact
 //     same markOrderPaid fulfillment pipeline, so test payments work with zero
-//     configuration. Switching to Stripe is an env-only change.
+//     configuration. Switching to Stripe is a settings/env-only change.
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
   const rl = rateLimit(`checkout:${ip}`, 12, 60_000)
@@ -54,7 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'This reservation is already paid' }, { status: 409 })
     }
 
-    if (!isStripeConfigured()) {
+    if (!(await isStripeConfigured())) {
       // Sandbox gateway — a real, self-hosted test checkout that feeds the
       // production fulfillment pipeline (markOrderPaid). Used until Stripe
       // keys are provided; nothing here is dead-ended.
