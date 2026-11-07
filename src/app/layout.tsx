@@ -1,38 +1,57 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Playfair_Display, Inter, Pacifico } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
+const pacifico = Pacifico({
+  variable: "--font-pacifico",
+  weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
+  title: "Klub Santa — Where Believers Belong | A Living Christmas Tradition",
+  description:
+    "Klub Santa is a seasonal ritual and global community built around belief, warmth, and family tradition. Experience a personalised call from Santa, heirloom letters, and a circle where believers belong.",
+  keywords: [
+    "Klub Santa",
+    "personalised Santa call",
+    "Christmas tradition",
+    "wax-sealed letter",
+    "family ritual",
+    "believers",
+  ],
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "Klub Santa — Where Believers Belong",
+    description:
+      "In a world that moves too quickly, we believe in pausing. Discover a living Christmas ritual crafted for families across generations.",
+    siteName: "Klub Santa",
     type: "website",
+    images: [{ url: "/media/hero-family.png", width: 1440, height: 720 }],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+  icons: {
+    icon: "/icon.svg",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#7D0A16",
 };
 
 export default function RootLayout({
@@ -43,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${playfair.variable} ${inter.variable} ${pacifico.variable} antialiased`}
       >
         {children}
         <Toaster />

@@ -1,8 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Klub Santa — database schema
+// NOTE (PostgreSQL migration path, per technical brief):
+// The schema uses only standard Prisma scalar types (String/Int/Boolean/DateTime)
+// so switching to Supabase Postgres requires ONLY:
+//   1. Change datasource provider below: provider = "postgresql"
+//   2. Point DATABASE_URL to the Supabase connection string
+//   3. Run: bun run db:push
+// No model changes are required.
 
 generator client {
   provider = "prisma-client-js"
@@ -13,20 +16,140 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+// Catalog of rituals/products sold on the landing page.
+// Managed from the admin panel; the landing page renders ACTIVE products from DB.
+model Product {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  tagline     String    @default("")
+  description String    @default("")
+  // Bullet points, one per line (kept as text for SQLite/Postgres portability)
+  points      String    @default("")
+  ribbon      String? // e.g. "Most Cherished"
+  badge       String? // corner tag e.g. "8 Languages"
+  ctaLabel    String    @default("Reserve Ritual")
+  priceCents  Int       @default(0)
+  currency    String    @default("USD")
+  image       String?
+  featured    Boolean   @default(false)
+  active      Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+// A reservation created from the "Prepare Your Family's Ritual" modal
+// (or via admin). Holds ONLY parent-approved personalization details.
+model Booking {
+  id            String          @id @default(cuid())
+  reference     String          @unique // human friendly, e.g. KS-7F3K2A
+  productId     String?
+  product       Product?        @relation(fields: [productId], references: [id])
+  planName      String          @default("")
+  recipientName String
+  pronunciation String          @default("")
+  ageRange      String          @default("")
+  language      String
+  parentEmail   String
+  memoryNote    String          @default("")
+  scheduledFor  String? // preferred gathering moment (free text, phase 2 scheduling)
+  status        String          @default("new") // new | awaiting_payment | paid | in_production | completed | cancelled
+  adminNote     String?
+  orders        Order[]
+  jobs          GenerationJob[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+// Payment record. provider="stripe" uses Stripe Checkout (code ready for keys),
+// provider="manual" is set when admin marks payment received outside the system.
+model Order {
+  id          String    @id @default(cuid())
+  bookingId   String
+  booking     Booking   @relation(fields: [bookingId], references: [id])
+  amountCents Int
+  currency    String    @default("USD")
+  status      String    @default("pending") // pending | paid | failed | refunded | cancelled
+  provider    String    @default("stripe") // stripe | manual
+  sessionRef  String?   @unique // Stripe Checkout session id (idempotency anchor)
+  paymentRef  String?   @unique // payment intent id or manual reference
+  paidAt      DateTime?
+  refundedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  jobs        GenerationJob[]
+}
+
+// Durable fulfillment job per the brief:
+// personalization -> payment -> durable job -> provider generation -> verified completion -> delivery
+model GenerationJob {
+  id            String    @id @default(cuid())
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+  bookingId     String
+  booking       Booking   @relation(fields: [bookingId], references: [id])
+  provider      String    @default("heygen")
+  kind          String    @default("video") // video | voice | live | call
+  status        String    @default("queued") // queued | submitted | processing | completed | failed | cancelled
+  providerJobId String?   @unique // idempotent webhook anchor on the provider side
+  scriptText    String?
+  outputUrl     String?
+  error         String?
+  attempts      Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  completedAt   DateTime?
+}
+
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  source         String    @default("landing") // landing | admin | partner
+  unsubscribedAt DateTime?
+  createdAt      DateTime  @default(now())
+}
+
+// "Sacred Questions" — FAQ accordion on the landing page, managed in admin.
+model Faq {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  question  String
+  answer    String
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
+// Staff accounts for the admin panel. Passwords are bcrypt hashes.
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String    @default("")
+  role         String    @default("owner") // owner | support | finance | content
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// Every outbound email is logged (sent via Resend when RESEND_API_KEY is set).
+model EmailLog {
+  id         String   @id @default(cuid())
+  toEmail    String
+  subject    String
+  template   String // booking_received | payment_received | keepsake_ready | newsletter_welcome
+  status     String   @default("queued") // queued | sent | failed | skipped_no_provider
+  provider   String   @default("resend")
+  providerId String?
+  error      String?
+  createdAt  DateTime @default(now())
+}
+
+// Key-value site settings editable from the admin panel.
+model Setting {
+  key       String   @id
+  value     String
   updatedAt DateTime @updatedAt
 }
