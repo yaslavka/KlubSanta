@@ -1,122 +1,127 @@
 # Klub Santa — Where Believers Belong 🎅
 
-Production-grade e-commerce platform for personalised Santa rituals: reservations,
-hosted checkout payments, durable AI-video fulfilment (HeyGen), transactional email
-(Resend) and a full staff admin panel ("Sanctuary Console").
+> 🇬🇧 This README is also available in English: [README_EN.md](README_EN.md)
 
-Brand: deep crimson `#7D0A16` · aged gold `#D0A56A` — carried through the public
-site, the sandbox checkout and the admin panel.
+Промышленная e-commerce платформа персональных рождественских ритуалов от Санты:
+бронирования, hosted-оплата, отказоустойчивое ИИ-видео (HeyGen), транзакционные
+письма (Resend) и полноценная админ-панель для команды («Sanctuary Console»).
 
-## Stack
+Бренд: глубокий багряный `#7D0A16` · состаренное золото `#D0A56A` — единый стиль
+на публичном сайте, в sandbox-оплате и в админ-панели.
 
-- **Next.js 16 (App Router) + TypeScript** — landing, API routes, webhooks
-- **Prisma ORM** — portable schema (SQLite locally, **one-line switch to Supabase Postgres**)
-- **Stripe Hosted Checkout** — signed webhooks + verify-on-return, **test & live modes**
-- **HeyGen** — async video generation jobs (webhook-verified completion)
-- **Resend** — transactional email with full delivery log
-- **shadcn/ui** — admin console components
+## Стек
 
-## Quick start
+- **Next.js 16 (App Router) + TypeScript** — лендинг, API-роуты, вебхуки
+- **Prisma ORM** — портируемая схема (локально SQLite, **переезд на Supabase Postgres одной строкой**)
+- **Stripe Hosted Checkout** — подписанные вебхуки + verify-on-return, **тестовый и боевой режимы**
+- **HeyGen** — асинхронные задачи генерации видео (завершение подтверждается вебхуком)
+- **Resend** — транзакционные письма с полным журналом доставки
+- **shadcn/ui** — компоненты админ-консоли
+
+## Быстрый старт
 
 ```bash
 bun install
-cp .env.example .env          # SQLite path works out of the box
-bun run db:push               # create/update the database
-bun run seed                  # demo catalog, FAQs, admin accounts
+cp .env.example .env          # SQLite работает из коробки
+bun run db:push               # создать/обновить базу данных
+bun run seed                  # демо-каталог, FAQ, аккаунты админов
 bun run dev                   # http://localhost:3000
 ```
 
-Admin panel: `/admin` → login with a seeded owner account (see seed output) —
-**change the password immediately**.
+Админ-панель: `/admin` → войдите сидовым owner-аккаунтом (учётные данные
+выводятся в консоль при seed) — **сразу смените пароль**.
 
-## Payment modes (test → battle, env-only switch)
+## Режимы оплаты (тест → бой, переключение только через env)
 
-The whole payment layer is **wired from day one**. Three modes, switched purely
-by environment variables — no code changes:
+Платёжный слой **подключён с первого дня**. Три режима, переключаются исключительно
+переменными окружения — без единой правки кода:
 
-| Mode | When | How to test |
+| Режим | Когда | Как проверить |
 |---|---|---|
-| **Sandbox** (default) | `STRIPE_SECRET_KEY` unset | Reserve a ritual → built-in branded checkout `/checkout/sandbox` opens. `4242 4242 4242 4242` succeeds, `4000 0000 0000 0002` declines. |
-| **Stripe TEST** | `STRIPE_SECRET_KEY=sk_test_…` | Real Stripe hosted checkout on the test network. Use Stripe test cards (same `4242…`). |
-| **Stripe LIVE** | `STRIPE_SECRET_KEY=sk_live_…` | Battle mode. Real charges. Verify the live webhook secret first. |
+| **Sandbox** (по умолчанию) | `STRIPE_SECRET_KEY` не задан | Бронирование ритуала → откроется встроенный брендированный чекаут `/checkout/sandbox`. `4242 4242 4242 4242` — успех, `4000 0000 0000 0002` — отказ. |
+| **Stripe TEST** | `STRIPE_SECRET_KEY=sk_test_…` | Настоящий Stripe hosted checkout в тестовой сети. Тестовые карты Stripe (та же `4242…`). |
+| **Stripe LIVE** | `STRIPE_SECRET_KEY=sk_live_…` | Боевой режим. Реальные списания. Сначала проверьте секрет боевого вебхука. |
 
-The active mode is always visible in the admin panel (sidebar badge + Settings →
-"Active payment mode" card with a go-live checklist). Credentials can be pasted
-directly in the admin panel — **API & AI Providers** (`/admin/api-docs`) — stored
-server-side and masked in every response; environment variables act as fallback
-(admin-panel values win). Editing integration credentials is restricted to the
-`owner` role.
+Активный режим всегда виден в админ-панели (бейдж в сайдбаре + Settings →
+карточка «Active payment mode» с чек-листом go-live). Ключи можно вставлять
+прямо в админ-панели — **API & AI Providers** (`/admin/api-docs`): значения
+хранятся на сервере и маскируются в каждом ответе; переменные окружения работают
+как резерв (значения из админки приоритетнее). Редактирование ключей интеграций
+доступно только роли `owner`.
 
-### How a payment is fulfilled (identical in all modes)
+### Как проходит оплата (одинаково во всех режимах)
 
 ```
-reservation → hosted checkout → signed webhook (or verify-on-return)
-    → markOrderPaid (idempotent) → confirmation email
-    → durable GenerationJob → HeyGen dispatch (idempotent)
-    → webhook-verified completion → keepsake email with private download link (JWT, 30d)
+бронирование → hosted checkout → подписанный вебхук (или verify-on-return)
+    → markOrderPaid (идемпотентно) → письмо-подтверждение
+    → живучая GenerationJob → отправка в HeyGen (идемпотентно)
+    → завершение подтверждено вебхуком → письмо с приватной ссылкой на видео (JWT, 30 дней)
 ```
 
-### Stripe webhook (production)
+### Вебхук Stripe (продакшен)
 
-- Endpoint URL: `https://YOUR-DOMAIN/api/webhooks/stripe`
-- Events: `checkout.session.completed`, `checkout.session.expired`,
+- URL эндпоинта: `https://ВАШ-ДОМЕН/api/webhooks/stripe`
+- События: `checkout.session.completed`, `checkout.session.expired`,
   `checkout.session.async_payment_failed`, `charge.refunded`
-- Signature verification is mandatory and already implemented; unhandled events
-  are acknowledged fast (dispatcher pattern).
+- Проверка подписи обязательна и уже реализована; необработанные события
+  быстро подтверждаются (паттерн dispatcher).
 
-Local TEST mode without a public webhook URL still completes the pipeline:
-the success page verifies the session via `POST /api/checkout/confirm`
-(idempotent with the webhook — whoever arrives first wins, never double-fulfils).
+Локальный TEST-режим без публичного URL вебхука всё равно проходит весь пайплайн:
+страница успеха проверяет сессию через `POST /api/checkout/confirm`
+(идемпотентно с вебхуком — кто первый пришёл, тот и сработал; двойного
+исполнения не бывает никогда).
 
-## Admin panel (Sanctuary Console)
+## Админ-панель (Sanctuary Console)
 
-`/admin` — role-based staff accounts (`owner`, `support`, `finance`, `content`):
+`/admin` — роли сотрудников (`owner`, `support`, `finance`, `content`):
 
-- **Dashboard** — live counters (reservations, paid orders, jobs, subscribers)
-- **Reservations** — personalisation details, notes, status workflow
-- **Orders** — payment status, mark-as-paid (manual/bank), refunds tracking
-- **Generation jobs** — queue, retry, provider job ids, outputs
-- **Rituals (catalog)** — products, prices, ordering, active toggles
-- **Sacred Questions** — FAQ management rendered on the landing page
-- **Subscribers** — "North Pole Dispatch" newsletter list
-- **Email log** — every outbound message with provider status
-- **API & AI Providers** (`/admin/api-docs`) — full API reference (storefront,
-  webhooks, admin) + paste-in credentials for the AI video provider (HeyGen:
-  API key, Santa Avatar ID, Voice ID, webhook secret, render mode), Stripe and
-  Resend — with "where to get each value" hints and webhook URLs to register
-- **Settings** — key/value site settings + payment mode & go-live checklist
+- **Dashboard** — живые счётчики (брони, оплаченные заказы, задачи, подписчики)
+- **Reservations** — детали персонализации, заметки, workflow статусов
+- **Orders** — статус оплаты, «отметить оплаченным» (вручную/банк), контроль возвратов
+- **Generation jobs** — очередь, повтор, ID задач провайдера, результаты
+- **Rituals (catalog)** — товары, цены, порядок, вкл/выкл
+- **Sacred Questions** — управление FAQ, который рендерится на лендинге
+- **Subscribers** — список рассылки «North Pole Dispatch»
+- **Email log** — каждое исходящее письмо со статусом доставки у провайдера
+- **API & AI Providers** (`/admin/api-docs`) — полный справочник API (storefront,
+  вебхуки, админка) + вставка ключей провайдера ИИ-видео (HeyGen: API key,
+  Santa Avatar ID, Voice ID, секрет вебхука, режим рендера), Stripe и Resend —
+  с подсказками «где взять каждое значение» и URL вебхуков для регистрации
+- **Settings** — настройки сайта key/value + режим оплаты и чек-лист go-live
 
-## Migrating to Supabase Postgres (per technical brief)
+## Переезд на Supabase Postgres (по ТЗ)
 
-The Prisma schema uses only portable scalar types — no model changes needed:
+Схема Prisma использует только портируемые скалярные типы — модели менять не нужно:
 
-1. `provider = "postgresql"` in `prisma/schema.prisma`
+1. `provider = "postgresql"` в `prisma/schema.prisma`
 2. `DATABASE_URL="postgresql://…supabase.co:5432/postgres"`
 3. `bun run db:push`
 
-## Deployment
+## Развёртывание на сервере
 
-Step-by-step server deployment guide (Ubuntu + Apache + systemd + Let's Encrypt, no Docker):
+Пошаговая инструкция (Ubuntu + Apache + systemd + Let's Encrypt, без Docker):
 
-- 🇬🇧 **[DEPLOY_EN.md](DEPLOY_EN.md)** — English version
-- 🇷🇺 **[DEPLOY.md](DEPLOY.md)** — Russian version (та же инструкция на русском)
+- 🇷🇺 **[DEPLOY.md](DEPLOY.md)** — русская версия
+- 🇬🇧 **[DEPLOY_EN.md](DEPLOY_EN.md)** — English version (та же инструкция на английском)
 
-## Security notes
+## Безопасность
 
-- All provider credentials are server-only (`server-only` modules, never shipped to the client)
-- Sandbox payment tokens are HMAC-signed (SESSION_SECRET), amount-bound and expire in 24h
-- Rate limiting on all public write endpoints
-- Adult consent is required and stored with every reservation (child-safety posture)
-- Keepsake download links are signed JWTs with expiry, not public URLs
+- Все ключи провайдеров — только на сервере (`server-only` модули, никогда не
+  попадают в клиентский бандл)
+- Токены sandbox-оплаты подписаны HMAC (SESSION_SECRET), привязаны к сумме и
+  живут 24 часа
+- Rate limiting на всех публичных write-эндпоинтах
+- Согласие совершеннолетнего обязательно и сохраняется с каждой бронью (child-safety)
+- Ссылки на скачивание видео — подписанные JWT с истечением срока, а не публичные URL
 
-## Project structure
+## Структура проекта
 
 ```
-src/app/                 landing (/), sandbox checkout, admin (/admin), API routes
-src/app/api/checkout/    hosted-checkout entry, sandbox gateway, verify-on-return
-src/app/api/webhooks/    stripe (signed), heygen (signed)
-src/lib/                 payments, fulfillment pipeline, mailer, heygen, auth, db
-src/components/landing/  the 12-section Klub Santa landing experience
-src/components/admin/    Sanctuary Console shell + page building blocks
-prisma/schema.prisma     portable data model (Postgres-ready)
+src/app/                 лендинг (/), sandbox-чекаут, админка (/admin), API-роуты
+src/app/api/checkout/    вход hosted-checkout, sandbox-шлюз, verify-on-return
+src/app/api/webhooks/    stripe (подписанный), heygen (подписанный)
+src/lib/                 payments, fulfillment-пайплайн, mailer, heygen, auth, db
+src/components/landing/  лендинг Klub Santa из 12 секций
+src/components/admin/    каркас Sanctuary Console + строительные блоки страниц
+prisma/schema.prisma     портируемая модель данных (готова к Postgres)
 ```
