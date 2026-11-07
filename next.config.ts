@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
+  // Убираем плавающую кнопку Next.js Dev Tools (id="devtools-indicator")
+  devIndicators: false,
 };
 
 export default nextConfig;
