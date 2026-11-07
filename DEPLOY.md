@@ -1,6 +1,6 @@
 # Klub Santa — развёртывание на сервере (Ubuntu, без Docker)
 
-Пошаговая инструкция для конкретно этого проекта: Next.js 16 (standalone-сборка) + Prisma + PostgreSQL (Supabase или локальный) + nginx + systemd + Let's Encrypt.
+Пошаговая инструкция для конкретно этого проекта: Next.js 16 (standalone-сборка) + Prisma + PostgreSQL (Supabase или локальный) + **Apache** + systemd + Let's Encrypt.
 
 Примеры используют домен `klubsanta.com` и пользователя `klubsanta` — замените на свои.
 
@@ -31,13 +31,13 @@ ssh root@IP_СЕРВЕРА
 
 # обновления + базовый набор
 apt update && apt upgrade -y
-apt install -y git curl nginx ufw
+apt install -y git curl apache2 ufw
 
 # отдельный пользователь под приложение (не root)
 adduser --disabled-password --gecos "" klubsanta
 ```
 
-**Файрвол:** наружу открываем только SSH (22), HTTP (80), HTTPS (443). Порт приложения 3000 наружу НЕ открываем — к нему будет ходить только nginx.
+**Файрвол:** наружу открываем только SSH (22), HTTP (80), HTTPS (443). Порт приложения 3000 наружу НЕ открываем — к нему будет ходить только Apache.
 
 ```bash
 ufw allow OpenSSH
@@ -235,52 +235,65 @@ journalctl -u klubsanta --since today
 
 ---
 
-## 7. nginx + HTTPS
+## 7. Apache + HTTPS
+
+Включаем нужные модули прокси:
 
 ```bash
-nano /etc/nginx/sites-available/klubsanta
+a2enmod proxy proxy_http headers rewrite
+systemctl restart apache2
 ```
 
-```nginx
-server {
-    listen 80;
-    server_name klubsanta.com www.klubsanta.com;
-
-    client_max_body_size 10m;
-
-    # Статика Next.js отдаётся напрямую (кэшируемая)
-    location /_next/static/ {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_cache_valid 200 1y;
-        add_header Cache-Control "public, max-age=31536000, immutable";
-    }
-
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_read_timeout 60s;
-    }
-}
-```
-
-Включаем и выпускаем сертификат:
+Создаём виртуальный хост:
 
 ```bash
-ln -s /etc/nginx/sites-available/klubsanta /etc/nginx/sites-enabled/
-rm -f /etc/nginx/sites-enabled/default
-nginx -t && systemctl reload nginx
-
-apt install -y certbot python3-certbot-nginx
-certbot --nginx -d klubsanta.com -d www.klubsanta.com --redirect -m vasha@pochta.ru --agree-tos
+nano /etc/apache2/sites-available/klubsanta.conf
 ```
 
-Certbot сам пропишет редирект на HTTPS и поставит обновление сертификата в cron. Проверка: `curl -sI https://klubsanta.com | head -3` → `HTTP/2 200`.
+```apache
+<VirtualHost *:80>
+    ServerName klubsanta.com
+    ServerAlias www.klubsanta.com
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+    Timeout 60
+
+    # Весь трафик — в Next.js на внутреннем порту
+    ProxyPass / http://127.0.0.1:3000/
+    ProxyPassReverse / http://127.0.0.1:3000/
+
+    # Чтобы приложение видело реальный протокол (важно для редиректов Stripe и ссылок в письмах)
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Port "80"
+
+    # Статика Next.js — неизменяемая, кэш на год
+    <Location "/_next/static/">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </Location>
+
+    ErrorLog ${APACHE_LOG_DIR}/klubsanta-error.log
+    CustomLog ${APACHE_LOG_DIR}/klubsanta-access.log combined
+</VirtualHost>
+```
+
+Включаем сайт и выпускаем сертификат:
+
+```bash
+a2ensite klubsanta
+a2dissite 000-default
+apache2ctl configtest        # ожидаем: Syntax OK
+systemctl reload apache2
+
+curl -s http://klubsanta.com/api/products | head -c 120   # уже должен прийти JSON через Apache
+
+apt install -y certbot python3-certbot-apache
+certbot --apache -d klubsanta.com -d www.klubsanta.com --redirect -m vasha@pochta.ru --agree-tos
+```
+
+Certbot с плагином `--apache` сам добавит HTTPS-virtualhost, поставит редирект HTTP→HTTPS и повесит автообновление сертификата. Проверка: `curl -sI https://klubsanta.com | head -3` → `HTTP/2 200`.
+
+> После выпуска сертификата загляните в `/etc/apache2/sites-available/klubsanta.conf` — certbot добавит туда блок `:443`. Строка `RequestHeader set X-Forwarded-Proto` должна внутри HTTPS-блока иметь значение `"https"` (certbot обычно создаёт отдельный ssl-конфиг `klubsanta-le-ssl.conf` — поправьте там). Это критично: иначе Next.js будет считать, что работает по http, и Stripe-редиректы/ссылки в письмах получат протокол http.
 
 ---
 
@@ -398,7 +411,7 @@ crontab -e
 | Письма со статусом `skipped_no_provider` | не задан `RESEND_API_KEY` (для тестов это норма) |
 | Заказы висят `queued` в Generation jobs | нет `HEYGEN_API_KEY` — диспетчер ждёт ключ; добавите — расхватает сам |
 | Ссылки на видео «Invalid or expired» | меняли `SESSION_SECRET` — старые ссылки убиты; ссылку можно перевыпустить из админки (Generation jobs) |
-| Вебхук Stripe отвечает 400 | взят `whsec_` не того режима (test/live), или nginx не передаёт тело как есть (не добавляйте буферизацию тела) |
+| Вебхук Stripe отвечает 400 | взят `whsec_` не того режима (test/live); также проверьте, что Apache проксирует тело запроса без изменений (не включайте mod_proxy_body-фильтры/перекодирование) |
 | `certbot` не выпускает сертификат | A-запись домена не смотрит на сервер, или порт 80 закрыт (`ufw allow 80/tcp`) |
 
 ---
@@ -406,7 +419,7 @@ crontab -e
 ## Архитектурная справка (что где крутится)
 
 ```
-Браузер ──HTTPS──> nginx :443 ──> Next.js standalone :3000 (systemd: klubsanta)
+Браузер ──HTTPS──> Apache :443 ──> Next.js standalone :3000 (systemd: klubsanta)
                                         │
                                         ├─> Supabase Postgres (каталог, брони, заказы, jobs, письма, настройки)
                                         ├─> Stripe API (чекаут)  <── вебхук ── Stripe
