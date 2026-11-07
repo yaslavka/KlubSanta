@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { db } from '@/lib/db'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo'
 import KlubLandingPage from '@/components/landing/KlubLandingPage'
 import { SitePreloader } from '@/components/site-preloader'
 import type { LandingFaq, LandingProduct } from '@/components/landing/types'
@@ -66,9 +67,71 @@ export default async function HomePage({
     sortOrder: row.sortOrder,
   }))
 
+  // ── Structured data (JSON-LD) ────────────────────────────────────────────
+  // Organization + WebSite + live catalog (Product/ItemList) + FAQPage.
+  // Everything is derived from the same DB rows the landing renders, so the
+  // markup can never drift away from what users actually see.
+  const contactEmail = contactSetting?.value ?? FALLBACK_CONTACT_EMAIL
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: `${SITE_URL}/media/logo.svg`,
+        email: contactEmail,
+        description: SITE_DESCRIPTION,
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        description: SITE_DESCRIPTION,
+        inLanguage: 'en',
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Christmas rituals',
+        itemListElement: products.map((product, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'Product',
+            name: product.name,
+            description: product.tagline || product.description,
+            image: `${SITE_URL}${product.image}`,
+            offers: {
+              '@type': 'Offer',
+              price: (product.priceCents / 100).toFixed(2),
+              priceCurrency: product.currency,
+              availability: 'https://schema.org/InStock',
+              url: `${SITE_URL}/#rituals`,
+            },
+          },
+        })),
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      },
+    ],
+  }
+
   return (
     <div className="ks-page">
       <SitePreloader />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="page-wrapper">
         <KlubLandingPage
           products={products}

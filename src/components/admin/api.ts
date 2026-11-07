@@ -1,5 +1,7 @@
 // Shared client helper for all admin API calls.
 // On 401 the middleware-protected session is gone — bounce to the login screen.
+// Exception: the login call itself — a 401 there means "Invalid credentials"
+// and must surface as a normal inline error, NOT as a session-expired redirect.
 
 export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -11,7 +13,8 @@ export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
     },
   })
 
-  if (res.status === 401) {
+  const isLoginCall = url.includes('/api/admin/auth/login')
+  if (res.status === 401 && !isLoginCall) {
     window.location.assign('/admin/login')
     throw new Error('Your session has expired. Redirecting to login…')
   }

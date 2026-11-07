@@ -170,6 +170,13 @@ bun run db:push        # creates the tables in Postgres
 bun prisma/seed.ts     # catalog + FAQ + admin (idempotent, does not overwrite existing rows)
 ```
 
+> ⚠️ **Warning: `db:push` can wipe your data.** After pulling schema changes on
+> a live server, `prisma db push --accept-data-loss` silently **recreates
+> tables** when a change is incompatible — taking bookings, orders and admin
+> accounts with them. Back up first (`pg_dump`) before any schema update, then
+> verify `adminUser`/`Product` afterwards and re-run the seed if the tables are
+> empty. This is the exact trap behind "my admin login suddenly vanished".
+
 If all is well you will see `✓ products: …`, `✓ admin user: …`, `Seed complete.`
 
 > The seed sets the admin password **only on the first run**. Lost it? Reset it with a single command (as the klubsanta user, inside the project folder):

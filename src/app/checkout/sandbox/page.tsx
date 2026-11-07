@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db } from '@/lib/db'
 import { formatMoney } from '@/lib/site'
@@ -6,6 +7,12 @@ import SandboxCheckoutForm from './sandbox-form'
 import { CircleAlert, ShieldCheck } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
+
+// Functional test-gateway page: never a search result.
+export const metadata: Metadata = {
+  title: 'Sandbox checkout',
+  robots: { index: false, follow: false },
+}
 
 type PageProps = {
   searchParams: Promise<{ t?: string | string[] }>

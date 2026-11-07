@@ -2,6 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Pacifico } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import {
+  OG_IMAGE,
+  OG_IMAGE_ALT,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/seo";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -23,28 +31,71 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Klub Santa — Where Believers Belong | A Living Christmas Tradition",
-  description:
-    "Klub Santa is a seasonal ritual and global community built around belief, warmth, and family tradition. Experience a personalised call from Santa, heirloom letters, and a circle where believers belong.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   keywords: [
     "Klub Santa",
     "personalised Santa call",
+    "personalized Santa video",
+    "Santa video message",
     "Christmas tradition",
     "wax-sealed letter",
+    "letter from Santa",
+    "keepsake video",
     "family ritual",
     "believers",
+    "North Pole",
+    "Christmas Eve",
   ],
+  applicationName: SITE_NAME,
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: { telephone: false },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Klub Santa — Where Believers Belong",
-    description:
-      "In a world that moves too quickly, we believe in pausing. Discover a living Christmas ritual crafted for families across generations.",
-    siteName: "Klub Santa",
     type: "website",
-    images: [{ url: "/media/hero-family.png", width: 1440, height: 720 }],
+    url: "/",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: OG_IMAGE_ALT,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   icons: {
-    icon: "/icon.svg",
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  category: "shopping",
 };
 
 export const viewport: Viewport = {

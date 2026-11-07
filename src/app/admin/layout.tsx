@@ -1,27 +1,12 @@
-'use client'
+import type { Metadata } from 'next'
+import { AdminChrome } from './admin-chrome'
 
-import { usePathname } from 'next/navigation'
-import { Toaster } from '@/components/ui/sonner'
-import { AdminProvider } from '@/components/admin/admin-provider'
-import { AdminShell } from '@/components/admin/admin-shell'
+// Staff console is functional, not content: keep it out of search indexes.
+export const metadata: Metadata = {
+  title: 'Sanctuary Console',
+  robots: { index: false, follow: false, nocache: true },
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-
-  // The login screen renders standalone (no shell, no auth check).
-  if (pathname === '/admin/login') {
-    return (
-      <>
-        <Toaster richColors position="top-right" />
-        {children}
-      </>
-    )
-  }
-
-  // Every other /admin route sits behind the session check + full shell.
-  return (
-    <AdminProvider>
-      <AdminShell>{children}</AdminShell>
-    </AdminProvider>
-  )
+  return <AdminChrome>{children}</AdminChrome>
 }
