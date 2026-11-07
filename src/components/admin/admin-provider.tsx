@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { BrandSplash } from '@/components/brand-splash'
 import type { AdminUser } from './types'
 
 export type PaymentMode = 'stripe_live' | 'stripe_test' | 'sandbox'
@@ -37,12 +38,7 @@ export function useAdmin(): AdminContextValue {
 }
 
 function Splash() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#7D0A16] to-[#3A0008]">
-      <img src="/media/logo.svg" alt="Klub Santa crest" className="size-16 animate-pulse" />
-      <p className="font-serif text-sm tracking-wide text-[#D0A56A]">Preparing the sanctuary…</p>
-    </div>
-  )
+  return <BrandSplash />
 }
 
 /**
