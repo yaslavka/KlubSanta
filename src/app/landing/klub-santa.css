@@ -106,6 +106,13 @@
             padding: 12px 0;
         }
 
+        /* На десктопе контейнер шапки шире основного контента (1280px → 1560px) */
+        @media (min-width: 1280px) {
+            .main-header.frontend-main-header .auto-container {
+                width: min(1560px, calc(100% - 40px));
+            }
+        }
+
         /* Christmas String Lights Across Top Edge */
         .tts-header-lights {
             position: absolute;
