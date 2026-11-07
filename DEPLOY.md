@@ -1,5 +1,7 @@
 # Klub Santa — развёртывание на сервере (Ubuntu, без Docker)
 
+> 🇬🇧 This guide is also available in English: [DEPLOY_EN.md](DEPLOY_EN.md)
+
 Пошаговая инструкция для конкретно этого проекта: Next.js 16 (standalone-сборка) + Prisma + PostgreSQL (Supabase или локальный) + **Apache** + systemd + Let's Encrypt.
 
 Примеры используют домен `klubsanta.com` и пользователя `klubsanta` — замените на свои.

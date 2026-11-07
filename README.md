@@ -94,6 +94,13 @@ The Prisma schema uses only portable scalar types — no model changes needed:
 2. `DATABASE_URL="postgresql://…supabase.co:5432/postgres"`
 3. `bun run db:push`
 
+## Deployment
+
+Step-by-step server deployment guide (Ubuntu + Apache + systemd + Let's Encrypt, no Docker):
+
+- 🇬🇧 **[DEPLOY_EN.md](DEPLOY_EN.md)** — English version
+- 🇷🇺 **[DEPLOY.md](DEPLOY.md)** — Russian version (та же инструкция на русском)
+
 ## Security notes
 
 - All provider credentials are server-only (`server-only` modules, never shipped to the client)
