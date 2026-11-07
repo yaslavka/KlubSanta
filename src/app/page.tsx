@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { db } from '@/lib/db'
 import KlubLandingPage from '@/components/landing/KlubLandingPage'
+import { SitePreloader } from '@/components/site-preloader'
 import type { LandingFaq, LandingProduct } from '@/components/landing/types'
 import './landing/klub-santa.css'
 
@@ -67,6 +68,7 @@ export default async function HomePage({
 
   return (
     <div className="ks-page">
+      <SitePreloader />
       <div className="page-wrapper">
         <KlubLandingPage
           products={products}

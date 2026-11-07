@@ -120,3 +120,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Klub Santa site preloader ────────────────────────────────────────────
+   Fallback на случай, если hydration так и не произошёл (медленная сеть,
+   блокировщик скриптов): оверлей сам растворяется за 12с и не блокирует
+   контент. При штатной работе JS убирает его раньше и снимает этот класс. */
+@keyframes ks-preloader-autohide {
+  0%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.ks-preloader-overlay {
+  animation: ks-preloader-autohide 12s ease forwards;
+}
