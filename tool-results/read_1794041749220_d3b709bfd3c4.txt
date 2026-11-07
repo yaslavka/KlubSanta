@@ -1,0 +1,2002 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <title>Klub Santa - Where Believers Belong | A Living Christmas Tradition</title>
+     6→    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+     7→    <meta name="description" content="Klub Santa is a seasonal ritual and global community built around belief, warmth, and family tradition. Experience a personalised call from Santa, heirloom letters, and a circle where believers belong.">
+     8→    <meta name="robots" content="index, follow">
+     9→    <link rel="canonical" href="https://klubsanta.com/">
+    10→
+    11→    <!-- Open Graph -->
+    12→    <meta property="og:locale" content="en_US">
+    13→    <meta property="og:type" content="website">
+    14→    <meta property="og:site_name" content="Klub Santa">
+    15→    <meta property="og:title" content="Klub Santa - Where Believers Belong">
+    16→    <meta property="og:description" content="In a world that moves too quickly, we believe in pausing. Discover a living Christmas ritual crafted for families across generations.">
+    17→    <meta property="og:url" content="https://klubsanta.com/">
+    18→    <meta property="og:image" content="https://klubsanta.com/family-moment.png">
+    19→
+    20→    <!-- Favicons -->
+    21→    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.PNG">
+    22→    <link rel="icon" type="image/png" href="apple-touch-icon.PNG">
+    23→    <meta name="theme-color" content="#7D0A16">
+    24→
+    25→    <!-- Fonts: Playfair Display, Inter, Pacifico + FontAwesome -->
+    26→    <link rel="preconnect" href="https://fonts.googleapis.com">
+    27→    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    28→    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    29→    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    30→
+    31→    <!-- Structured Data (Organization, WebSite, FAQPage) -->
+    32→    <script type="application/ld+json">
+    33→    {
+    34→      "@context": "https://schema.org",
+    35→      "@graph": [
+    36→        {
+    37→          "@type": "Organization",
+    38→          "@id": "https://klubsanta.com/#organization",
+    39→          "name": "Klub Santa",
+    40→          "url": "https://klubsanta.com/",
+    41→          "logo": "https://klubsanta.com/Klub%20Santa.png",
+    42→          "description": "Klub Santa is a global Christmas ritual and community where believers belong.",
+    43→          "email": "hello@klubsanta.com"
+    44→        },
+    45→        {
+    46→          "@type": "WebSite",
+    47→          "@id": "https://klubsanta.com/#website",
+    48→          "url": "https://klubsanta.com/",
+    49→          "name": "Klub Santa",
+    50→          "publisher": { "@id": "https://klubsanta.com/#organization" }
+    51→        },
+    52→        {
+    53→          "@type": "FAQPage",
+    54→          "@id": "https://klubsanta.com/#faq",
+    55→          "mainEntity": [
+    56→            {
+    57→              "@type": "Question",
+    58→              "name": "What is Klub Santa?",
+    59→              "acceptedAnswer": {
+    60→                "@type": "Answer",
+    61→                "text": "Klub Santa is a seasonal ritual and community built around belief, warmth, and family tradition. We create intimate Christmas moments, beginning with a personal call from Santa and growing into an annual tradition shared across generations."
+    62→              }
+    63→            },
+    64→            {
+    65→              "@type": "Question",
+    66→              "name": "How does the Call From Santa work?",
+    67→              "acceptedAnswer": {
+    68→                "@type": "Answer",
+    69→                "text": "Parents share a few cherished details about their child or loved one, choose the moment for their gathering, and Santa calls directly by name to share a personal, unhurried conversation."
+    70→              }
+    71→            },
+    72→            {
+    73→              "@type": "Question",
+    74→              "name": "Is Klub Santa only for children?",
+    75→              "acceptedAnswer": {
+    76→                "@type": "Answer",
+    77→                "text": "No. While children are at the heart of the ritual, Klub Santa is created for parents, grandparents, couples, and anyone who chooses to keep the spirit of Christmas alive."
+    78→              }
+    79→            },
+    80→            {
+    81→              "@type": "Question",
+    82→              "name": "How does the Gifting Token Circle support charities?",
+    83→              "acceptedAnswer": {
+    84→                "@type": "Answer",
+    85→                "text": "Every season, 10% of our community ritual supports orphans and isolated elders, and members can sponsor Gifting Tokens so no believer is forgotten on Christmas Eve."
+    86→              }
+    87→            }
+    88→          ]
+    89→        }
+    90→      ]
+    91→    }
+    92→    </script>
+    93→
+    94→    <style>
+    95→        /* ==========================================================================
+    96→           KLUB SANTA BRANDBOARD PALETTE & TYPOGRAPHY SYSTEM
+    97→           Adapted to TalkToSanta.com's exact 12-section DOM & CSS Ergonomics
+    98→           ========================================================================== */
+    99→        :root {
+   100→            --ks-primary-red: #7D0A16;
+   101→            --ks-secondary-red: #A11224;
+   102→            --ks-berry-red: #B0172A;
+   103→            --ks-gold: #D0A56A;
+   104→            --ks-star-gold: #F8DFAF;
+   105→            --ks-evergreen: #1F3326;
+   106→            --ks-evergreen-deep: #132118;
+   107→            --ks-ivory: #F3EDE2;
+   108→            --ks-ivory-light: #FAF6F0;
+   109→            --ks-shadow: #3A0008;
+   110→            --ks-night: #240308;
+   111→
+   112→            --font-serif: 'Playfair Display', Georgia, serif;
+   113→            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+   114→            --font-script: 'Pacifico', cursive;
+   115→        }
+   116→
+   117→        *, *::before, *::after {
+   118→            box-sizing: border-box;
+   119→        }
+   120→
+   121→        html {
+   122→            scroll-behavior: smooth;
+   123→            font-family: var(--font-sans);
+   124→            color: var(--ks-shadow);
+   125→            background-color: var(--ks-ivory);
+   126→        }
+   127→
+   128→        body {
+   129→            margin: 0;
+   130→            padding: 0;
+   131→            font-family: var(--font-sans);
+   132→            color: var(--ks-shadow);
+   133→            background-color: var(--ks-ivory);
+   134→            overflow-x: hidden;
+   135→            -webkit-font-smoothing: antialiased;
+   136→        }
+   137→
+   138→        img, video, svg {
+   139→            max-width: 100%;
+   140→            height: auto;
+   141→        }
+   142→
+   143→        a {
+   144→            color: inherit;
+   145→            text-decoration: none;
+   146→            transition: color 0.2s ease, opacity 0.2s ease;
+   147→        }
+   148→
+   149→        .page-wrapper {
+   150→            position: relative;
+   151→            width: 100%;
+   152→            overflow-x: hidden;
+   153→        }
+   154→
+   155→        .auto-container, .container {
+   156→            width: min(1280px, calc(100% - 40px));
+   157→            margin-inline: auto;
+   158→        }
+   159→
+   160→        .row {
+   161→            display: flex;
+   162→            flex-wrap: wrap;
+   163→            margin-inline: -15px;
+   164→        }
+   165→
+   166→        .col-lg-3, .col-lg-9, .col-md-12 {
+   167→            padding-inline: 15px;
+   168→            width: 100%;
+   169→        }
+   170→
+   171→        @media (min-width: 992px) {
+   172→            .col-lg-3 { width: 25%; }
+   173→            .col-lg-9 { width: 75%; }
+   174→        }
+   175→
+   176→        .sr-only, .newsletter-sr-only {
+   177→            position: absolute !important;
+   178→            width: 1px !important;
+   179→            height: 1px !important;
+   180→            padding: 0 !important;
+   181→            margin: -1px !important;
+   182→            overflow: hidden !important;
+   183→            clip: rect(0, 0, 0, 0) !important;
+   184→            white-space: nowrap !important;
+   185→            border: 0 !important;
+   186→        }
+   187→
+   188→        /* ==========================================================================
+   189→           SECTION 1: HEADER (.main-header.frontend-main-header)
+   190→           Christmas String Lights + Snowflakes + Sticky Navigation
+   191→           ========================================================================== */
+   192→        .main-header.frontend-main-header {
+   193→            position: sticky;
+   194→            top: 0;
+   195→            z-index: 1000;
+   196→            background: linear-gradient(180deg, var(--ks-shadow) 0%, var(--ks-primary-red) 100%);
+   197→            border-bottom: 1px solid rgba(208, 165, 106, 0.38);
+   198→            box-shadow: 0 12px 34px rgba(58, 0, 8, 0.42);
+   199→        }
+   200→
+   201→        .main-header .main-box {
+   202→            position: relative;
+   203→            padding: 12px 0;
+   204→        }
+   205→
+   206→        /* Christmas String Lights Across Top Edge */
+   207→        .tts-header-lights {
+   208→            position: absolute;
+   209→            top: 0;
+   210→            left: 0;
+   211→            right: 0;
+   212→            height: 14px;
+   213→            display: flex;
+   214→            justify-content: space-around;
+   215→            align-items: flex-start;
+   216→            pointer-events: none;
+   217→            z-index: 3;
+   218→            overflow: hidden;
+   219→        }
+   220→
+   221→        .tts-header-lights::before {
+   222→            content: "";
+   223→            position: absolute;
+   224→            top: 2px;
+   225→            left: 0;
+   226→            right: 0;
+   227→            height: 1px;
+   228→            background: rgba(208, 165, 106, 0.45);
+   229→        }
+   230→
+   231→        .tts-light {
+   232→            position: relative;
+   233→            width: 9px;
+   234→            height: 12px;
+   235→            border-radius: 50% 50% 60% 60%;
+   236→            margin-top: 2px;
+   237→            animation: ks-bulb-glow 2.8s ease-in-out infinite alternate;
+   238→        }
+   239→
+   240→        .tts-light--red {
+   241→            background: var(--ks-berry-red);
+   242→            box-shadow: 0 0 10px rgba(176, 23, 42, 0.9), 0 0 18px rgba(248, 223, 175, 0.4);
+   243→        }
+   244→
+   245→        .tts-light--gold {
+   246→            background: var(--ks-star-gold);
+   247→            box-shadow: 0 0 12px rgba(248, 223, 175, 0.95), 0 0 20px rgba(208, 165, 106, 0.65);
+   248→            animation-delay: 0.7s;
+   249→        }
+   250→
+   251→        .tts-light--green {
+   252→            background: #3B6E4C;
+   253→            box-shadow: 0 0 10px rgba(59, 110, 76, 0.9), 0 0 18px rgba(248, 223, 175, 0.35);
+   254→            animation-delay: 1.4s;
+   255→        }
+   256→
+   257→        .tts-light--ice {
+   258→            background: var(--ks-ivory);
+   259→            box-shadow: 0 0 11px rgba(243, 237, 226, 0.95), 0 0 18px rgba(208, 165, 106, 0.5);
+   260→            animation-delay: 2.1s;
+   261→        }
+   262→
+   263→        @keyframes ks-bulb-glow {
+   264→            0% { opacity: 0.62; transform: scale(0.92); }
+   265→            100% { opacity: 1; transform: scale(1.08); }
+   266→        }
+   267→
+   268→        /* Floating Snowflakes Inside Header */
+   269→        .tts-header-snow {
+   270→            position: absolute;
+   271→            inset: 0;
+   272→            pointer-events: none;
+   273→            overflow: hidden;
+   274→            opacity: 0.25;
+   275→        }
+   276→
+   277→        .tts-snow-icon {
+   278→            position: absolute;
+   279→            color: var(--ks-star-gold);
+   280→            font-size: 10px;
+   281→            animation: ks-header-snow 6s ease-in-out infinite alternate;
+   282→        }
+   283→
+   284→        .tts-snow-icon--1 { left: 6%; top: 24%; }
+   285→        .tts-snow-icon--2 { left: 23%; top: 68%; animation-delay: 1s; }
+   286→        .tts-snow-icon--3 { left: 44%; top: 20%; animation-delay: 2s; }
+   287→        .tts-snow-icon--4 { left: 64%; top: 72%; animation-delay: 0.5s; }
+   288→        .tts-snow-icon--5 { left: 81%; top: 28%; animation-delay: 1.7s; }
+   289→        .tts-snow-icon--6 { left: 93%; top: 62%; animation-delay: 2.5s; }
+   290→
+   291→        @keyframes ks-header-snow {
+   292→            from { transform: translateY(-2px) rotate(0deg); opacity: 0.35; }
+   293→            to { transform: translateY(3px) rotate(25deg); opacity: 0.85; }
+   294→        }
+   295→
+   296→        .tts-navigation {
+   297→            position: relative;
+   298→            z-index: 4;
+   299→            display: flex;
+   300→            align-items: center;
+   301→            justify-content: space-between;
+   302→            gap: 20px;
+   303→        }
+   304→
+   305→        .tts-brand {
+   306→            display: inline-flex;
+   307→            align-items: center;
+   308→            gap: 12px;
+   309→            flex-shrink: 0;
+   310→        }
+   311→
+   312→        .tts-brand img {
+   313→            height: 54px;
+   314→            width: auto;
+   315→            object-fit: contain;
+   316→            filter: drop-shadow(0 4px 12px rgba(58, 0, 8, 0.5));
+   317→        }
+   318→
+   319→        .tts-brand-wordmark {
+   320→            display: flex;
+   321→            flex-direction: column;
+   322→        }
+   323→
+   324→        .tts-brand-wordmark strong {
+   325→            font-family: var(--font-serif);
+   326→            font-size: 1.35rem;
+   327→            font-weight: 700;
+   328→            color: var(--ks-ivory);
+   329→            letter-spacing: -0.02em;
+   330→            line-height: 1.05;
+   331→        }
+   332→
+   333→        .tts-brand-wordmark span {
+   334→            font-family: var(--font-sans);
+   335→            font-size: 0.68rem;
+   336→            font-weight: 600;
+   337→            letter-spacing: 0.16em;
+   338→            text-transform: uppercase;
+   339→            color: var(--ks-gold);
+   340→            margin-top: 2px;
+   341→        }
+   342→
+   343→        .tts-nav-collapse {
+   344→            display: flex;
+   345→            align-items: center;
+   346→            margin-left: auto;
+   347→        }
+   348→
+   349→        .tts-nav-list {
+   350→            display: flex;
+   351→            align-items: center;
+   352→            gap: 6px;
+   353→            list-style: none;
+   354→            margin: 0;
+   355→            padding: 0;
+   356→        }
+   357→
+   358→        .tts-nav-link {
+   359→            display: inline-flex;
+   360→            align-items: center;
+   361→            gap: 7px;
+   362→            padding: 9px 13px;
+   363→            border-radius: 999px;
+   364→            color: var(--ks-ivory);
+   365→            font-size: 0.88rem;
+   366→            font-weight: 600;
+   367→            letter-spacing: 0.01em;
+   368→            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+   369→        }
+   370→
+   371→        .tts-nav-link i {
+   372→            color: var(--ks-gold);
+   373→            font-size: 0.82rem;
+   374→        }
+   375→
+   376→        .tts-nav-link:hover {
+   377→            background: rgba(248, 223, 175, 0.12);
+   378→            color: var(--ks-star-gold);
+   379→            transform: translateY(-1px);
+   380→        }
+   381→
+   382→        .tts-nav-link--pill {
+   383→            background: linear-gradient(135deg, var(--ks-gold) 0%, var(--ks-star-gold) 100%);
+   384→            color: var(--ks-shadow) !important;
+   385→            font-weight: 800;
+   386→            padding: 10px 18px;
+   387→            box-shadow: 0 8px 20px rgba(208, 165, 106, 0.32);
+   388→        }
+   389→
+   390→        .tts-nav-link--pill i {
+   391→            color: var(--ks-primary-red);
+   392→        }
+   393→
+   394→        .tts-nav-link--pill:hover {
+   395→            background: linear-gradient(135deg, var(--ks-star-gold) 0%, var(--ks-gold) 100%);
+   396→            color: var(--ks-shadow) !important;
+   397→            transform: translateY(-2px);
+   398→        }
+   399→
+   400→        .tts-nav-link--contact {
+   401→            border: 1px solid rgba(208, 165, 106, 0.42);
+   402→            background: rgba(58, 0, 8, 0.35);
+   403→        }
+   404→
+   405→        .tts-mobile-cta,
+   406→        .tts-toggler {
+   407→            display: none;
+   408→        }
+   409→
+   410→        @media (max-width: 1080px) {
+   411→            .tts-mobile-cta {
+   412→                display: inline-flex;
+   413→                align-items: center;
+   414→                gap: 6px;
+   415→                margin-left: auto;
+   416→                padding: 8px 14px;
+   417→                border-radius: 999px;
+   418→                background: linear-gradient(135deg, var(--ks-gold), var(--ks-star-gold));
+   419→                color: var(--ks-shadow);
+   420→                font-size: 0.8rem;
+   421→                font-weight: 800;
+   422→            }
+   423→
+   424→            .tts-toggler {
+   425→                display: inline-flex;
+   426→                flex-direction: column;
+   427→                justify-content: center;
+   428→                gap: 5px;
+   429→                width: 42px;
+   430→                height: 42px;
+   431→                padding: 9px;
+   432→                border: 1px solid rgba(208, 165, 106, 0.45);
+   433→                border-radius: 10px;
+   434→                background: rgba(58, 0, 8, 0.45);
+   435→                cursor: pointer;
+   436→            }
+   437→
+   438→            .tts-toggler-line {
+   439→                display: block;
+   440→                width: 100%;
+   441→                height: 2px;
+   442→                background: var(--ks-star-gold);
+   443→                border-radius: 2px;
+   444→            }
+   445→
+   446→            .tts-nav-collapse {
+   447→                display: none;
+   448→                position: absolute;
+   449→                top: 100%;
+   450→                left: 0;
+   451→                right: 0;
+   452→                padding: 16px 20px 22px;
+   453→                background: var(--ks-shadow);
+   454→                border-bottom: 2px solid var(--ks-gold);
+   455→                box-shadow: 0 22px 40px rgba(0, 0, 0, 0.5);
+   456→            }
+   457→
+   458→            .tts-nav-collapse.is-open {
+   459→                display: block;
+   460→            }
+   461→
+   462→            .tts-nav-list {
+   463→                flex-direction: column;
+   464→                align-items: stretch;
+   465→                gap: 8px;
+   466→            }
+   467→
+   468→            .tts-nav-link {
+   469→                justify-content: flex-start;
+   470→                padding: 12px 16px;
+   471→            }
+   472→        }
+   473→
+   474→        /* ==========================================================================
+   475→           SECTION 2: FULL-BLEED VIDEO HERO (section.tts-hero#home-hero)
+   476→           Right-Aligned Editorial Copy + Video Background Watchdog
+   477→           ========================================================================== */
+   478→        .tts-hero {
+   479→            position: relative;
+   480→            isolation: isolate;
+   481→            min-height: clamp(560px, 78vh, 840px);
+   482→            display: flex;
+   483→            align-items: center;
+   484→            overflow: hidden;
+   485→            background: var(--ks-shadow);
+   486→            color: var(--ks-ivory);
+   487→        }
+   488→
+   489→        .tts-hero__media,
+   490→        .tts-hero__poster,
+   491→        .tts-hero__poster img,
+   492→        .tts-hero__video,
+   493→        .tts-hero__shade {
+   494→            position: absolute;
+   495→            inset: 0;
+   496→            width: 100%;
+   497→            height: 100%;
+   498→        }
+   499→
+   500→        .tts-hero__media {
+   501→            z-index: 0;
+   502→            background: var(--ks-shadow);
+   503→        }
+   504→
+   505→        .tts-hero__poster {
+   506→            z-index: 1;
+   507→            display: block;
+   508→        }
+   509→
+   510→        .tts-hero__poster img,
+   511→        .tts-hero__video {
+   512→            object-fit: cover;
+   513→            object-position: center 24%;
+   514→        }
+   515→
+   516→        .tts-hero__video {
+   517→            z-index: 2;
+   518→            opacity: 0;
+   519→            transition: opacity 0.45s ease;
+   520→            pointer-events: none;
+   521→        }
+   522→
+   523→        .tts-hero.is-video-playing .tts-hero__video {
+   524→            opacity: 1;
+   525→        }
+   526→
+   527→        .tts-hero__shade {
+   528→            z-index: 3;
+   529→            background:
+   530→                linear-gradient(270deg, rgba(58, 0, 8, 0.90) 0%, rgba(125, 10, 22, 0.74) 44%, rgba(58, 0, 8, 0.24) 76%, rgba(58, 0, 8, 0.12) 100%),
+   531→                linear-gradient(180deg, rgba(58, 0, 8, 0.36) 0%, rgba(58, 0, 8, 0) 34%, rgba(58, 0, 8, 0.56) 100%);
+   532→        }
+   533→
+   534→        .tts-hero__content {
+   535→            position: relative;
+   536→            z-index: 4;
+   537→            width: min(100% - 48px, 620px);
+   538→            margin: 0 max(24px, 6vw) 0 auto;
+   539→            padding: clamp(56px, 8vh, 96px) 0;
+   540→            text-align: left;
+   541→        }
+   542→
+   543→        .tts-hero__eyebrow {
+   544→            margin: 0 0 14px;
+   545→            color: var(--ks-star-gold);
+   546→            font-family: var(--font-sans);
+   547→            font-size: 0.82rem;
+   548→            font-weight: 800;
+   549→            letter-spacing: 0.22em;
+   550→            text-transform: uppercase;
+   551→            text-shadow: 0 2px 12px rgba(58, 0, 8, 0.65);
+   552→        }
+   553→
+   554→        .tts-hero h1 {
+   555→            margin: 0;
+   556→            color: var(--ks-ivory);
+   557→            font-family: var(--font-serif);
+   558→            font-size: clamp(2.65rem, 4.9vw, 4.75rem);
+   559→            font-weight: 700;
+   560→            line-height: 1.02;
+   561→            letter-spacing: -0.03em;
+   562→            text-shadow: 0 10px 30px rgba(58, 0, 8, 0.6);
+   563→        }
+   564→
+   565→        .tts-hero h1 em {
+   566→            display: block;
+   567→            font-family: var(--font-script);
+   568→            font-style: normal;
+   569→            font-weight: 400;
+   570→            color: var(--ks-star-gold);
+   571→            font-size: 0.68em;
+   572→            margin-top: 6px;
+   573→        }
+   574→
+   575→        .tts-hero__support {
+   576→            max-width: 35rem;
+   577→            margin: 20px 0 0;
+   578→            color: rgba(243, 237, 226, 0.94);
+   579→            font-family: var(--font-sans);
+   580→            font-size: clamp(1.03rem, 1.45vw, 1.22rem);
+   581→            font-weight: 400;
+   582→            line-height: 1.65;
+   583→            text-shadow: 0 4px 18px rgba(58, 0, 8, 0.55);
+   584→        }
+   585→
+   586→        .tts-hero__actions {
+   587→            display: flex;
+   588→            flex-wrap: wrap;
+   589→            align-items: center;
+   590→            gap: 14px;
+   591→            margin-top: 28px;
+   592→        }
+   593→
+   594→        .tts-hero__cta {
+   595→            display: inline-flex;
+   596→            align-items: center;
+   597→            justify-content: center;
+   598→            gap: 12px;
+   599→            min-height: 58px;
+   600→            padding: 15px 30px;
+   601→            border: 1px solid rgba(248, 223, 175, 0.48);
+   602→            border-radius: 999px;
+   603→            background: linear-gradient(135deg, var(--ks-secondary-red) 0%, var(--ks-primary-red) 100%);
+   604→            color: var(--ks-ivory) !important;
+   605→            font-family: var(--font-sans);
+   606→            font-size: 1rem;
+   607→            font-weight: 800;
+   608→            letter-spacing: 0.02em;
+   609→            box-shadow: 0 16px 36px rgba(58, 0, 8, 0.45);
+   610→            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+   611→        }
+   612→
+   613→        .tts-hero__cta:hover {
+   614→            transform: translateY(-2px);
+   615→            background: linear-gradient(135deg, var(--ks-berry-red) 0%, var(--ks-secondary-red) 100%);
+   616→            box-shadow: 0 20px 42px rgba(58, 0, 8, 0.58);
+   617→        }
+   618→
+   619→        .tts-hero__cta-secondary {
+   620→            display: inline-flex;
+   621→            align-items: center;
+   622→            gap: 10px;
+   623→            min-height: 56px;
+   624→            padding: 14px 24px;
+   625→            border: 1px solid rgba(208, 165, 106, 0.55);
+   626→            border-radius: 999px;
+   627→            background: rgba(58, 0, 8, 0.48);
+   628→            backdrop-filter: blur(8px);
+   629→            color: var(--ks-star-gold) !important;
+   630→            font-size: 0.94rem;
+   631→            font-weight: 700;
+   632→            cursor: pointer;
+   633→            transition: transform 0.2s ease, background 0.2s ease;
+   634→        }
+   635→
+   636→        .tts-hero__cta-secondary:hover {
+   637→            transform: translateY(-2px);
+   638→            background: rgba(58, 0, 8, 0.72);
+   639→        }
+   640→
+   641→        .tts-hero__trust {
+   642→            display: flex;
+   643→            flex-wrap: wrap;
+   644→            gap: 10px 20px;
+   645→            margin: 26px 0 0;
+   646→            padding: 0;
+   647→            list-style: none;
+   648→            color: rgba(243, 237, 226, 0.92);
+   649→            font-family: var(--font-sans);
+   650→            font-size: 0.9rem;
+   651→            font-weight: 600;
+   652→        }
+   653→
+   654→        .tts-hero__trust li {
+   655→            display: inline-flex;
+   656→            align-items: center;
+   657→            gap: 8px;
+   658→        }
+   659→
+   660→        .tts-hero__trust li::before {
+   661→            content: "✦";
+   662→            color: var(--ks-gold);
+   663→            font-size: 0.85rem;
+   664→        }
+   665→
+   666→        /* ==========================================================================
+   667→           SECTION 3: COUNTDOWN BAR + "WHO WE ARE" SPLIT GRID (section.home-section1)
+   668→           ========================================================================== */
+   669→        .home-section1 {
+   670→            position: relative;
+   671→            isolation: isolate;
+   672→            overflow: hidden;
+   673→            background:
+   674→                radial-gradient(circle at 18% 12%, rgba(208, 165, 106, 0.24), transparent 34%),
+   675→                radial-gradient(circle at 84% 18%, rgba(125, 10, 22, 0.08), transparent 36%),
+   676→                linear-gradient(180deg, #EFE6D5 0%, var(--ks-ivory) 46%, var(--ks-ivory-light) 100%) !important;
+   677→            padding: 36px 0 112px !important;
+   678→        }
+   679→
+   680→        .home-section1 > .container:first-child {
+   681→            position: relative;
+   682→            z-index: 3;
+   683→        }
+   684→
+   685→        /* Top Floating Countdown Container */
+   686→        .home-section1 .countdown-container {
+   687→            position: relative;
+   688→            z-index: 3;
+   689→            display: grid;
+   690→            grid-template-columns: minmax(260px, 1fr) auto auto;
+   691→            align-items: center;
+   692→            gap: 22px;
+   693→            max-width: 1120px;
+   694→            margin: -56px auto 20px;
+   695→            padding: 22px 28px;
+   696→            border: 1px solid rgba(208, 165, 106, 0.55);
+   697→            border-radius: 22px;
+   698→            background: linear-gradient(135deg, var(--ks-shadow) 0%, var(--ks-primary-red) 62%, var(--ks-evergreen) 100%);
+   699→            color: var(--ks-ivory);
+   700→            box-shadow: 0 24px 55px rgba(58, 0, 8, 0.28);
+   701→        }
+   702→
+   703→        .home-section1 .countdown-header {
+   704→            font-family: var(--font-serif);
+   705→            font-size: 1.15rem;
+   706→            font-weight: 600;
+   707→            color: var(--ks-star-gold);
+   708→            line-height: 1.35;
+   709→        }
+   710→
+   711→        .home-section1 .countdown-header small {
+   712→            display: block;
+   713→            font-family: var(--font-sans);
+   714→            font-size: 0.72rem;
+   715→            font-weight: 700;
+   716→            letter-spacing: 0.16em;
+   717→            text-transform: uppercase;
+   718→            color: var(--ks-gold);
+   719→            margin-bottom: 4px;
+   720→        }
+   721→
+   722→        .home-section1 .countdown-timer {
+   723→            display: flex;
+   724→            align-items: center;
+   725→            gap: 10px;
+   726→        }
+   727→
+   728→        .home-section1 .time-box {
+   729→            min-width: 82px;
+   730→            padding: 10px 14px;
+   731→            border: 1px solid rgba(208, 165, 106, 0.38);
+   732→            border-radius: 14px;
+   733→            background: rgba(58, 0, 8, 0.55);
+   734→            text-align: center;
+   735→        }
+   736→
+   737→        .home-section1 .time-box span:first-child {
+   738→            display: block;
+   739→            font-family: var(--font-serif);
+   740→            font-size: 1.75rem;
+   741→            font-weight: 700;
+   742→            line-height: 1.05;
+   743→            color: var(--ks-star-gold);
+   744→        }
+   745→
+   746→        .home-section1 .time-label {
+   747→            display: block;
+   748→            margin-top: 3px;
+   749→            font-size: 0.68rem;
+   750→            font-weight: 700;
+   751→            letter-spacing: 0.12em;
+   752→            text-transform: uppercase;
+   753→            color: rgba(243, 237, 226, 0.8);
+   754→        }
+   755→
+   756→        .home-section1 .book-button {
+   757→            display: inline-flex;
+   758→            align-items: center;
+   759→            justify-content: center;
+   760→            gap: 10px;
+   761→            min-height: 50px;
+   762→            padding: 12px 24px;
+   763→            border-radius: 999px;
+   764→            background: linear-gradient(135deg, var(--ks-gold), var(--ks-star-gold));
+   765→            color: var(--ks-shadow) !important;
+   766→            font-size: 0.9rem;
+   767→            font-weight: 800;
+   768→            white-space: nowrap;
+   769→            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+   770→            transition: transform 0.2s ease, box-shadow 0.2s ease;
+   771→        }
+   772→
+   773→        .home-section1 .book-button:hover {
+   774→            transform: translateY(-2px);
+   775→            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+   776→        }
+   777→
+   778→        /* Santa About Atmospheric Layers */
+   779→        .home-section1 .santa-about {
+   780→            position: relative;
+   781→            z-index: 2;
+   782→            max-width: 1280px;
+   783→            margin: 54px auto 0;
+   784→            padding: 0 24px;
+   785→        }
+   786→
+   787→        .home-section1 .santa-about-atmosphere {
+   788→            position: absolute;
+   789→            inset: 0;
+   790→            z-index: 1;
+   791→            overflow: hidden;
+   792→            pointer-events: none;
+   793→        }
+   794→
+   795→        .home-section1 .santa-atmosphere-stars {
+   796→            position: absolute;
+   797→            inset: 0;
+   798→            opacity: 0.42;
+   799→            background-image:
+   800→                radial-gradient(circle at 12% 18%, rgba(208, 165, 106, 0.85) 0 2px, transparent 3px),
+   801→                radial-gradient(circle at 28% 9%, rgba(125, 10, 22, 0.35) 0 1.5px, transparent 3px),
+   802→                radial-gradient(circle at 72% 15%, rgba(208, 165, 106, 0.78) 0 2px, transparent 3px),
+   803→                radial-gradient(circle at 86% 29%, rgba(31, 51, 38, 0.32) 0 1.5px, transparent 3px);
+   804→        }
+   805→
+   806→        .home-section1 .santa-atmosphere-sleigh {
+   807→            position: absolute;
+   808→            top: 92px;
+   809→            right: max(32px, 6vw);
+   810→            width: clamp(190px, 24vw, 320px);
+   811→            color: rgba(125, 10, 22, 0.16);
+   812→            transform: rotate(-5deg);
+   813→        }
+   814→
+   815→        .home-section1 .santa-atmosphere-sleigh svg {
+   816→            display: block;
+   817→            width: 100%;
+   818→            height: auto;
+   819→            fill: currentColor;
+   820→        }
+   821→
+   822→        .home-section1 .santa-atmosphere-pines {
+   823→            position: absolute;
+   824→            right: 0;
+   825→            bottom: 0;
+   826→            left: 0;
+   827→            height: 150px;
+   828→            opacity: 0.24;
+   829→            background:
+   830→                linear-gradient(180deg, rgba(31, 51, 38, 0) 0%, rgba(31, 51, 38, 0.16) 100%),
+   831→                repeating-linear-gradient(90deg, rgba(31, 51, 38, 0.22) 0 2px, transparent 2px 56px);
+   832→            clip-path: polygon(
+   833→                0% 100%, 0% 72%, 4% 48%, 7% 72%, 11% 42%, 15% 74%, 19% 52%, 23% 76%,
+   834→                28% 39%, 32% 72%, 37% 46%, 41% 74%, 46% 52%, 51% 75%, 56% 38%, 60% 71%,
+   835→                65% 47%, 69% 73%, 74% 43%, 78% 74%, 83% 50%, 87% 74%, 92% 41%, 96% 70%, 100% 49%, 100% 100%
+   836→            );
+   837→        }
+   838→
+   839→        .home-section1 .santa-atmosphere-landscape {
+   840→            position: absolute;
+   841→            right: -6%;
+   842→            bottom: -48px;
+   843→            left: -6%;
+   844→            height: 128px;
+   845→            border-radius: 50% 50% 0 0;
+   846→            background: linear-gradient(180deg, rgba(243, 237, 226, 0.35) 0%, rgba(235, 225, 208, 0.92) 100%);
+   847→            box-shadow: 0 -16px 40px rgba(208, 165, 106, 0.22);
+   848→        }
+   849→
+   850→        /* Santa About Split Grid */
+   851→        .home-section1 .santa-about-grid {
+   852→            display: grid;
+   853→            grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+   854→            grid-template-areas:
+   855→                "copy visual"
+   856→                "features visual"
+   857→                "cta visual";
+   858→            gap: 28px 58px;
+   859→            align-items: center;
+   860→        }
+   861→
+   862→        .home-section1 .santa-about-copy {
+   863→            grid-area: copy;
+   864→            text-align: left;
+   865→        }
+   866→
+   867→        .home-section1 .santa-about-label {
+   868→            display: inline-flex;
+   869→            align-items: center;
+   870→            gap: 10px;
+   871→            margin: 0 0 16px;
+   872→            color: var(--ks-primary-red);
+   873→            font-size: 0.82rem;
+   874→            font-weight: 800;
+   875→            letter-spacing: 0.18em;
+   876→            text-transform: uppercase;
+   877→        }
+   878→
+   879→        .home-section1 .santa-about-label span {
+   880→            width: 30px;
+   881→            height: 2px;
+   882→            border-radius: 999px;
+   883→            background: linear-gradient(90deg, var(--ks-primary-red), var(--ks-gold));
+   884→        }
+   885→
+   886→        .home-section1 .santa-about h2 {
+   887→            margin: 0;
+   888→            color: var(--ks-shadow);
+   889→            font-family: var(--font-serif);
+   890→            font-size: clamp(2.35rem, 4.2vw, 3.85rem);
+   891→            font-weight: 700;
+   892→            line-height: 1.06;
+   893→            letter-spacing: -0.03em;
+   894→        }
+   895→
+   896→        .home-section1 .santa-about h2 em {
+   897→            font-style: italic;
+   898→            color: var(--ks-primary-red);
+   899→        }
+   900→
+   901→        .home-section1 .santa-about-intro {
+   902→            margin: 22px 0 0;
+   903→            max-width: 640px;
+   904→        }
+   905→
+   906→        .home-section1 .santa-about-intro p {
+   907→            margin: 0 0 14px;
+   908→            color: #4A1C22;
+   909→            font-size: 1.06rem;
+   910→            line-height: 1.75;
+   911→        }
+   912→
+   913→        .home-section1 .santa-about-note {
+   914→            position: relative;
+   915→            margin-top: 22px;
+   916→            padding: 18px 22px 18px 24px;
+   917→            border-left: 4px solid var(--ks-primary-red);
+   918→            border-radius: 0 18px 18px 0;
+   919→            background: rgba(255, 255, 255, 0.78);
+   920→            box-shadow: 0 16px 36px rgba(58, 0, 8, 0.08);
+   921→        }
+   922→
+   923→        .home-section1 .santa-about-note p {
+   924→            margin: 0;
+   925→            color: var(--ks-shadow);
+   926→            font-family: var(--font-serif);
+   927→            font-style: italic;
+   928→            font-size: 1.08rem;
+   929→            font-weight: 600;
+   930→            line-height: 1.6;
+   931→        }
+   932→
+   933→        /* 2x2 Feature Cards (RITUAL, BELIEF, NORTH, KLUB) */
+   934→        .home-section1 .santa-about-features {
+   935→            grid-area: features;
+   936→            display: grid;
+   937→            grid-template-columns: repeat(2, minmax(0, 1fr));
+   938→            gap: 14px;
+   939→        }
+   940→
+   941→        .home-section1 .santa-feature {
+   942→            display: flex;
+   943→            align-items: flex-start;
+   944→            gap: 14px;
+   945→            padding: 16px 18px;
+   946→            border: 1px solid rgba(208, 165, 106, 0.42);
+   947→            border-radius: 18px;
+   948→            background: rgba(255, 255, 255, 0.82);
+   949→            box-shadow: 0 14px 32px rgba(58, 0, 8, 0.06);
+   950→            transition: transform 0.2s ease, border-color 0.2s ease;
+   951→        }
+   952→
+   953→        .home-section1 .santa-feature:hover {
+   954→            transform: translateY(-2px);
+   955→            border-color: var(--ks-primary-red);
+   956→        }
+   957→
+   958→        .home-section1 .santa-feature-badge {
+   959→            flex: 0 0 auto;
+   960→            min-width: 58px;
+   961→            padding: 8px 10px;
+   962→            border-radius: 999px;
+   963→            background: rgba(125, 10, 22, 0.1);
+   964→            color: var(--ks-primary-red);
+   965→            font-size: 0.7rem;
+   966→            font-weight: 800;
+   967→            letter-spacing: 0.12em;
+   968→            text-align: center;
+   969→            text-transform: uppercase;
+   970→        }
+   971→
+   972→        .home-section1 .santa-feature:nth-child(2) .santa-feature-badge,
+   973→        .home-section1 .santa-feature:nth-child(4) .santa-feature-badge {
+   974→            background: rgba(31, 51, 38, 0.12);
+   975→            color: var(--ks-evergreen);
+   976→        }
+   977→
+   978→        .home-section1 .santa-feature h3 {
+   979→            margin: 0 0 4px;
+   980→            color: var(--ks-shadow);
+   981→            font-family: var(--font-serif);
+   982→            font-size: 1.05rem;
+   983→            font-weight: 700;
+   984→            line-height: 1.25;
+   985→        }
+   986→
+   987→        .home-section1 .santa-feature p {
+   988→            margin: 0;
+   989→            color: #5C2B31;
+   990→            font-size: 0.88rem;
+   991→            line-height: 1.5;
+   992→        }
+   993→
+   994→        .home-section1 .santa-about-cta {
+   995→            grid-area: cta;
+   996→            display: flex;
+   997→            flex-wrap: wrap;
+   998→            align-items: center;
+   999→            gap: 16px 22px;
+  1000→        }
+  1001→
+  1002→        .home-section1 .santa-about-button {
+  1003→            display: inline-flex;
+  1004→            align-items: center;
+  1005→            justify-content: center;
+  1006→            gap: 12px;
+  1007→            padding: 16px 28px;
+  1008→            border-radius: 999px;
+  1009→            background: linear-gradient(135deg, var(--ks-primary-red) 0%, var(--ks-secondary-red) 100%);
+  1010→            color: var(--ks-ivory) !important;
+  1011→            font-size: 0.94rem;
+  1012→            font-weight: 800;
+  1013→            letter-spacing: 0.04em;
+  1014→            text-transform: uppercase;
+  1015→            box-shadow: 0 18px 34px rgba(125, 10, 22, 0.28);
+  1016→            transition: transform 0.2s ease, box-shadow 0.2s ease;
+  1017→        }
+  1018→
+  1019→        .home-section1 .santa-about-button:hover {
+  1020→            transform: translateY(-2px);
+  1021→            box-shadow: 0 22px 40px rgba(125, 10, 22, 0.36);
+  1022→        }
+  1023→
+  1024→        .home-section1 .santa-about-subtext {
+  1025→            color: #5C2B31;
+  1026→            font-size: 0.92rem;
+  1027→            font-weight: 600;
+  1028→        }
+  1029→
+  1030→        /* Right Framed Visual */
+  1031→        .home-section1 .santa-about-visual {
+  1032→            grid-area: visual;
+  1033→            position: relative;
+  1034→        }
+  1035→
+  1036→        .home-section1 .santa-about-visual::before {
+  1037→            content: "";
+  1038→            position: absolute;
+  1039→            inset: -18px -12px 18px 22px;
+  1040→            border-radius: 34px;
+  1041→            background:
+  1042→                radial-gradient(circle at 22% 20%, rgba(208, 165, 106, 0.35), transparent 44%),
+  1043→                linear-gradient(145deg, rgba(125, 10, 22, 0.14), rgba(31, 51, 38, 0.12));
+  1044→            transform: rotate(2deg);
+  1045→        }
+  1046→
+  1047→        .home-section1 .santa-about-frame {
+  1048→            position: relative;
+  1049→            z-index: 1;
+  1050→            margin: 0;
+  1051→            padding: 14px;
+  1052→            border: 1px solid rgba(208, 165, 106, 0.55);
+  1053→            border-radius: 30px;
+  1054→            background: #FAF6F0;
+  1055→            box-shadow: 0 28px 70px rgba(58, 0, 8, 0.18);
+  1056→            transform: rotate(1.5deg);
+  1057→        }
+  1058→
+  1059→        .home-section1 .santa-about-frame img {
+  1060→            display: block;
+  1061→            width: 100%;
+  1062→            aspect-ratio: 1 / 1.05;
+  1063→            object-fit: cover;
+  1064→            border-radius: 22px;
+  1065→        }
+  1066→
+  1067→        .home-section1 .santa-about-tag {
+  1068→            position: absolute;
+  1069→            left: 26px;
+  1070→            bottom: 26px;
+  1071→            max-width: 310px;
+  1072→            padding: 14px 18px;
+  1073→            border: 1px solid rgba(208, 165, 106, 0.45);
+  1074→            border-radius: 18px;
+  1075→            background: rgba(58, 0, 8, 0.88);
+  1076→            backdrop-filter: blur(10px);
+  1077→            color: var(--ks-ivory);
+  1078→            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+  1079→        }
+  1080→
+  1081→        .home-section1 .santa-about-tag strong {
+  1082→            display: block;
+  1083→            color: var(--ks-star-gold);
+  1084→            font-size: 0.75rem;
+  1085→            font-weight: 800;
+  1086→            letter-spacing: 0.14em;
+  1087→            text-transform: uppercase;
+  1088→        }
+  1089→
+  1090→        .home-section1 .santa-about-tag span {
+  1091→            display: block;
+  1092→            margin-top: 4px;
+  1093→            color: rgba(243, 237, 226, 0.92);
+  1094→            font-family: var(--font-serif);
+  1095→            font-size: 0.96rem;
+  1096→            line-height: 1.4;
+  1097→        }
+  1098→
+  1099→        @media (max-width: 991px) {
+  1100→            .home-section1 .countdown-container {
+  1101→                grid-template-columns: 1fr;
+  1102→                text-align: center;
+  1103→                justify-items: center;
+  1104→                margin-top: 10px;
+  1105→            }
+  1106→
+  1107→            .home-section1 .santa-about-grid {
+  1108→                grid-template-columns: 1fr;
+  1109→                grid-template-areas:
+  1110→                    "copy"
+  1111→                    "visual"
+  1112→                    "features"
+  1113→                    "cta";
+  1114→            }
+  1115→
+  1116→            .home-section1 .santa-about-frame {
+  1117→                max-width: 540px;
+  1118→                margin-inline: auto;
+  1119→                transform: none;
+  1120→            }
+  1121→        }
+  1122→
+  1123→        @media (max-width: 640px) {
+  1124→            .home-section1 .santa-about-features {
+  1125→                grid-template-columns: 1fr;
+  1126→            }
+  1127→        }
+  1128→
+  1129→        /* ==========================================================================
+  1130→           SECTION 4: 5-CARD OFFER GRID (section#santa-offers.home-section2.santa-offers)
+  1131→           3 Top Row + 2 Centered Bottom Row
+  1132→           ========================================================================== */
+  1133→        .home-section2.santa-offers {
+  1134→            position: relative;
+  1135→            isolation: isolate;
+  1136→            overflow: hidden;
+  1137→            padding: 104px 0 116px !important;
+  1138→            background:
+  1139→                radial-gradient(circle at 14% 16%, rgba(208, 165, 106, 0.22), transparent 28%),
+  1140→                radial-gradient(circle at 86% 24%, rgba(161, 18, 36, 0.18), transparent 32%),
+  1141→                linear-gradient(180deg, var(--ks-shadow) 0%, #52050E 48%, var(--ks-primary-red) 100%) !important;
+  1142→            color: var(--ks-ivory);
+  1143→        }
+  1144→
+  1145→        .home-section2.santa-offers::before {
+  1146→            content: "";
+  1147→            position: absolute;
+  1148→            inset: 0;
+  1149→            z-index: 0;
+  1150→            pointer-events: none;
+  1151→            opacity: 0.22;
+  1152→            background-image:
+  1153→                radial-gradient(circle, rgba(248, 223, 175, 0.9) 0 1.2px, transparent 2px),
+  1154→                radial-gradient(circle, rgba(243, 237, 226, 0.7) 0 1px, transparent 1.8px);
+  1155→            background-size: 140px 140px, 95px 95px;
+  1156→            background-position: 0 0, 42px 58px;
+  1157→        }
+  1158→
+  1159→        .home-section2.santa-offers .container {
+  1160→            position: relative;
+  1161→            z-index: 2;
+  1162→        }
+  1163→
+  1164→        .santa-offers-heading {
+  1165→            max-width: 780px;
+  1166→            margin: 0 auto 54px;
+  1167→            text-align: center;
+  1168→        }
+  1169→
+  1170→        .santa-offers-kicker {
+  1171→            display: inline-flex;
+  1172→            align-items: center;
+  1173→            gap: 10px;
+  1174→            margin: 0 0 14px;
+  1175→            padding: 7px 16px;
+  1176→            border: 1px solid rgba(208, 165, 106, 0.45);
+  1177→            border-radius: 999px;
+  1178→            background: rgba(58, 0, 8, 0.45);
+  1179→            color: var(--ks-star-gold);
+  1180→            font-size: 0.76rem;
+  1181→            font-weight: 800;
+  1182→            letter-spacing: 0.18em;
+  1183→            text-transform: uppercase;
+  1184→        }
+  1185→
+  1186→        .santa-offers-kicker span {
+  1187→            width: 7px;
+  1188→            height: 7px;
+  1189→            border-radius: 50%;
+  1190→            background: var(--ks-gold);
+  1191→        }
+  1192→
+  1193→        .santa-offers-heading h2 {
+  1194→            margin: 0;
+  1195→            color: var(--ks-ivory);
+  1196→            font-family: var(--font-serif);
+  1197→            font-size: clamp(2.4rem, 4.5vw, 4rem);
+  1198→            font-weight: 700;
+  1199→            line-height: 1.06;
+  1200→            letter-spacing: -0.03em;
+  1201→        }
+  1202→
+  1203→        .santa-offers-heading h2 em {
+  1204→            font-style: italic;
+  1205→            color: var(--ks-star-gold);
+  1206→        }
+  1207→
+  1208→        .santa-offers-heading p:last-child {
+  1209→            margin: 16px auto 0;
+  1210→            max-width: 640px;
+  1211→            color: rgba(243, 237, 226, 0.86);
+  1212→            font-size: 1.05rem;
+  1213→            line-height: 1.68;
+  1214→        }
+  1215→
+  1216→        /* 6-Column Grid: 3 top cards (span 2 each), 2 centered bottom cards */
+  1217→        .santa-offers-grid {
+  1218→            display: grid;
+  1219→            grid-template-columns: repeat(6, minmax(0, 1fr));
+  1220→            gap: 24px;
+  1221→            align-items: stretch;
+  1222→        }
+  1223→
+  1224→        .santa-offer-card {
+  1225→            grid-column: span 2;
+  1226→            position: relative;
+  1227→            display: flex;
+  1228→            flex-direction: column;
+  1229→            border-radius: 26px;
+  1230→            padding: 16px 16px 24px;
+  1231→            background: var(--ks-ivory-light);
+  1232→            color: var(--ks-shadow);
+  1233→            border: 1px solid rgba(208, 165, 106, 0.55);
+  1234→            box-shadow: 0 24px 55px rgba(24, 0, 4, 0.34);
+  1235→            transition: transform 0.25s ease, box-shadow 0.25s ease;
+  1236→        }
+  1237→
+  1238→        .santa-offer-card:nth-child(4) {
+  1239→            grid-column: 2 / span 2;
+  1240→        }
+  1241→
+  1242→        .santa-offer-card:nth-child(5) {
+  1243→            grid-column: 4 / span 2;
+  1244→        }
+  1245→
+  1246→        .santa-offer-card:hover {
+  1247→            transform: translateY(-6px);
+  1248→            box-shadow: 0 30px 65px rgba(24, 0, 4, 0.46);
+  1249→        }
+  1250→
+  1251→        .santa-offer-card.is-featured {
+  1252→            background: linear-gradient(180deg, #FFFDF9 0%, #F7EFE2 100%);
+  1253→            border: 2px solid var(--ks-gold);
+  1254→            box-shadow: 0 28px 68px rgba(0, 0, 0, 0.44), 0 0 0 4px rgba(208, 165, 106, 0.22);
+  1255→        }
+  1256→
+  1257→        .santa-offer-ribbon {
+  1258→            position: absolute;
+  1259→            top: 28px;
+  1260→            right: 28px;
+  1261→            z-index: 3;
+  1262→            padding: 7px 14px;
+  1263→            border-radius: 999px;
+  1264→            background: linear-gradient(135deg, var(--ks-primary-red), var(--ks-berry-red));
+  1265→            color: var(--ks-star-gold);
+  1266→            font-size: 0.72rem;
+  1267→            font-weight: 800;
+  1268→            letter-spacing: 0.12em;
+  1269→            text-transform: uppercase;
+  1270→            box-shadow: 0 10px 22px rgba(58, 0, 8, 0.35);
+  1271→        }
+  1272→
+  1273→        .santa-offer-media {
+  1274→            position: relative;
+  1275→            display: block;
+  1276→            overflow: hidden;
+  1277→            border-radius: 18px;
+  1278→            aspect-ratio: 16 / 10;
+  1279→            background: var(--ks-shadow);
+  1280→        }
+  1281→
+  1282→        .santa-offer-media img {
+  1283→            width: 100%;
+  1284→            height: 100%;
+  1285→            object-fit: cover;
+  1286→            transition: transform 0.4s ease;
+  1287→        }
+  1288→
+  1289→        .santa-offer-card:hover .santa-offer-media img {
+  1290→            transform: scale(1.05);
+  1291→        }
+  1292→
+  1293→        .santa-offer-tag {
+  1294→            position: absolute;
+  1295→            left: 12px;
+  1296→            bottom: 12px;
+  1297→            padding: 6px 12px;
+  1298→            border-radius: 999px;
+  1299→            background: rgba(58, 0, 8, 0.86);
+  1300→            backdrop-filter: blur(8px);
+  1301→            color: var(--ks-star-gold);
+  1302→            font-size: 0.7rem;
+  1303→            font-weight: 800;
+  1304→            letter-spacing: 0.1em;
+  1305→            text-transform: uppercase;
+  1306→        }
+  1307→
+  1308→        .santa-offer-body {
+  1309→            display: flex;
+  1310→            flex-direction: column;
+  1311→            flex: 1 1 auto;
+  1312→            padding: 20px 8px 0;
+  1313→        }
+  1314→
+  1315→        .santa-offer-type {
+  1316→            margin: 0 0 6px;
+  1317→            color: var(--ks-primary-red);
+  1318→            font-size: 0.74rem;
+  1319→            font-weight: 800;
+  1320→            letter-spacing: 0.14em;
+  1321→            text-transform: uppercase;
+  1322→        }
+  1323→
+  1324→        .santa-offer-body h3 {
+  1325→            margin: 0 0 10px;
+  1326→            color: var(--ks-shadow);
+  1327→            font-family: var(--font-serif);
+  1328→            font-size: 1.48rem;
+  1329→            font-weight: 700;
+  1330→            line-height: 1.2;
+  1331→        }
+  1332→
+  1333→        .santa-offer-copy {
+  1334→            margin: 0 0 16px;
+  1335→            color: #4F2329;
+  1336→            font-size: 0.94rem;
+  1337→            line-height: 1.62;
+  1338→        }
+  1339→
+  1340→        .santa-offer-points {
+  1341→            margin: 0 0 22px;
+  1342→            padding: 0;
+  1343→            list-style: none;
+  1344→            display: grid;
+  1345→            gap: 8px;
+  1346→        }
+  1347→
+  1348→        .santa-offer-points li {
+  1349→            position: relative;
+  1350→            padding-left: 22px;
+  1351→            color: var(--ks-evergreen);
+  1352→            font-size: 0.86rem;
+  1353→            font-weight: 600;
+  1354→            line-height: 1.45;
+  1355→        }
+  1356→
+  1357→        .santa-offer-points li::before {
+  1358→            content: "✦";
+  1359→            position: absolute;
+  1360→            left: 0;
+  1361→            top: 0;
+  1362→            color: var(--ks-primary-red);
+  1363→            font-size: 0.8rem;
+  1364→        }
+  1365→
+  1366→        .santa-offer-bottom {
+  1367→            margin-top: auto;
+  1368→            padding-top: 16px;
+  1369→            border-top: 1px solid rgba(208, 165, 106, 0.36);
+  1370→            display: flex;
+  1371→            align-items: center;
+  1372→            justify-content: space-between;
+  1373→            gap: 12px;
+  1374→        }
+  1375→
+  1376→        .santa-offer-price span {
+  1377→            display: block;
+  1378→            color: #6E3B42;
+  1379→            font-size: 0.7rem;
+  1380→            font-weight: 700;
+  1381→            letter-spacing: 0.1em;
+  1382→            text-transform: uppercase;
+  1383→        }
+  1384→
+  1385→        .santa-offer-price strong {
+  1386→            display: block;
+  1387→            margin-top: 2px;
+  1388→            color: var(--ks-primary-red);
+  1389→            font-family: var(--font-serif);
+  1390→            font-size: 1.15rem;
+  1391→            font-weight: 700;
+  1392→        }
+  1393→
+  1394→        .santa-offer-cta {
+  1395→            display: inline-flex;
+  1396→            align-items: center;
+  1397→            justify-content: center;
+  1398→            gap: 8px;
+  1399→            min-height: 44px;
+  1400→            padding: 10px 18px;
+  1401→            border: 0;
+  1402→            border-radius: 999px;
+  1403→            background: linear-gradient(135deg, var(--ks-primary-red), var(--ks-secondary-red));
+  1404→            color: var(--ks-ivory) !important;
+  1405→            font-family: var(--font-sans);
+  1406→            font-size: 0.84rem;
+  1407→            font-weight: 800;
+  1408→            cursor: pointer;
+  1409→            box-shadow: 0 10px 22px rgba(125, 10, 22, 0.24);
+  1410→            transition: transform 0.2s ease, background 0.2s ease;
+  1411→        }
+  1412→
+  1413→        .santa-offer-cta:hover {
+  1414→            transform: translateY(-2px);
+  1415→            background: linear-gradient(135deg, var(--ks-berry-red), var(--ks-primary-red));
+  1416→        }
+  1417→
+  1418→        @media (max-width: 1080px) {
+  1419→            .santa-offers-grid {
+  1420→                grid-template-columns: repeat(2, minmax(0, 1fr));
+  1421→            }
+  1422→            .santa-offer-card,
+  1423→            .santa-offer-card:nth-child(4),
+  1424→            .santa-offer-card:nth-child(5) {
+  1425→                grid-column: span 1;
+  1426→            }
+  1427→        }
+  1428→
+  1429→        @media (max-width: 680px) {
+  1430→            .santa-offers-grid {
+  1431→                grid-template-columns: 1fr;
+  1432→            }
+  1433→        }
+  1434→
+  1435→        /* ==========================================================================
+  1436→           SECTION 5: INTERACTIVE SCROLL-ACTIVATED NORTH POLE JOURNEY
+  1437→           (section#north-pole-journey.north-pole-journey)
+  1438→           ========================================================================== */
+  1439→        .north-pole-journey {
+  1440→            position: relative;
+  1441→            isolation: isolate;
+  1442→            overflow: hidden;
+  1443→            padding: 112px 0 132px;
+  1444→            background:
+  1445→                radial-gradient(circle at 50% 8%, rgba(208, 165, 106, 0.22), transparent 28%),
+  1446→                radial-gradient(circle at 16% 24%, rgba(31, 51, 38, 0.45), transparent 36%),
+  1447→                radial-gradient(circle at 86% 32%, rgba(161, 18, 36, 0.28), transparent 34%),
+  1448→                linear-gradient(180deg, #1E0307 0%, var(--ks-shadow) 46%, #2C040A 100%);
+  1449→            color: var(--ks-ivory);
+  1450→        }
+  1451→
+  1452→        .north-pole-journey .journey-sky {
+  1453→            position: absolute;
+  1454→            inset: 0;
+  1455→            z-index: 1;
+  1456→            pointer-events: none;
+  1457→            overflow: hidden;
+  1458→        }
+  1459→
+  1460→        .north-pole-journey .journey-stars {
+  1461→            position: absolute;
+  1462→            inset: 0;
+  1463→            opacity: 0.72;
+  1464→            background-image:
+  1465→                radial-gradient(circle at 8% 12%, var(--ks-star-gold) 0 1.5px, transparent 2.5px),
+  1466→                radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.82) 0 1px, transparent 2px),
+  1467→                radial-gradient(circle at 31% 10%, rgba(248, 223, 175, 0.9) 0 2px, transparent 3px),
+  1468→                radial-gradient(circle at 61% 14%, var(--ks-star-gold) 0 2px, transparent 3px),
+  1469→                radial-gradient(circle at 76% 26%, rgba(255, 255, 255, 0.86) 0 1.5px, transparent 2.5px),
+  1470→                radial-gradient(circle at 89% 12%, rgba(208, 165, 106, 0.9) 0 1.5px, transparent 2.5px);
+  1471→        }
+  1472→
+  1473→        .north-pole-journey .journey-aurora {
+  1474→            position: absolute;
+  1475→            top: 40px;
+  1476→            left: 50%;
+  1477→            width: min(1180px, 92vw);
+  1478→            height: 290px;
+  1479→            transform: translateX(-50%);
+  1480→            background:
+  1481→                radial-gradient(ellipse at 30% 45%, rgba(31, 51, 38, 0.55), transparent 58%),
+  1482→                radial-gradient(ellipse at 68% 36%, rgba(208, 165, 106, 0.24), transparent 54%),
+  1483→                radial-gradient(ellipse at 52% 62%, rgba(161, 18, 36, 0.26), transparent 60%);
+  1484→            filter: blur(22px);
+  1485→            opacity: 0.9;
+  1486→        }
+  1487→
+  1488→        .north-pole-journey .journey-hills {
+  1489→            position: absolute;
+  1490→            right: -8%;
+  1491→            bottom: -44px;
+  1492→            left: -8%;
+  1493→            height: 180px;
+  1494→            border-radius: 50% 50% 0 0;
+  1495→            background:
+  1496→                radial-gradient(circle at 50% 0%, rgba(208, 165, 106, 0.16), transparent 58%),
+  1497→                linear-gradient(180deg, rgba(31, 51, 38, 0.82) 0%, #121F17 100%);
+  1498→        }
+  1499→
+  1500→        .north-pole-journey .container {
+  1501→            position: relative;
+  1502→            z-index: 2;
+  1503→        }
+  1504→
+  1505→        .north-pole-journey .journey-heading {
+  1506→            max-width: 780px;
+  1507→            margin: 0 auto 56px;
+  1508→            text-align: center;
+  1509→        }
+  1510→
+  1511→        .north-pole-journey .journey-kicker {
+  1512→            display: inline-flex;
+  1513→            align-items: center;
+  1514→            gap: 10px;
+  1515→            margin: 0 0 16px;
+  1516→            padding: 8px 16px;
+  1517→            border: 1px solid rgba(208, 165, 106, 0.38);
+  1518→            border-radius: 999px;
+  1519→            background: rgba(255, 255, 255, 0.06);
+  1520→            color: var(--ks-star-gold);
+  1521→            font-size: 0.76rem;
+  1522→            font-weight: 800;
+  1523→            letter-spacing: 0.18em;
+  1524→            text-transform: uppercase;
+  1525→        }
+  1526→
+  1527→        .north-pole-journey .journey-kicker span {
+  1528→            width: 8px;
+  1529→            height: 8px;
+  1530→            border-radius: 50%;
+  1531→            background: var(--ks-gold);
+  1532→            box-shadow: 0 0 12px var(--ks-star-gold);
+  1533→        }
+  1534→
+  1535→        .north-pole-journey .journey-heading h2 {
+  1536→            margin: 0;
+  1537→            color: var(--ks-ivory);
+  1538→            font-family: var(--font-serif);
+  1539→            font-size: clamp(2.4rem, 4.7vw, 4.15rem);
+  1540→            font-weight: 700;
+  1541→            line-height: 1.05;
+  1542→            letter-spacing: -0.03em;
+  1543→        }
+  1544→
+  1545→        .north-pole-journey .journey-heading h2 em {
+  1546→            font-style: italic;
+  1547→            color: var(--ks-star-gold);
+  1548→        }
+  1549→
+  1550→        .north-pole-journey .journey-heading p:last-child {
+  1551→            max-width: 650px;
+  1552→            margin: 18px auto 0;
+  1553→            color: rgba(243, 237, 226, 0.82);
+  1554→            font-size: 1.05rem;
+  1555→            line-height: 1.72;
+  1556→        }
+  1557→
+  1558→        .north-pole-journey .journey-map {
+  1559→            --journey-progress: 0.35;
+  1560→            position: relative;
+  1561→            min-height: 610px;
+  1562→            padding: 18px 0 10px;
+  1563→        }
+  1564→
+  1565→        .north-pole-journey .journey-path {
+  1566→            position: absolute;
+  1567→            inset: 0;
+  1568→            width: 100%;
+  1569→            height: 580px;
+  1570→            overflow: visible;
+  1571→            pointer-events: none;
+  1572→        }
+  1573→
+  1574→        .north-pole-journey .journey-path-track,
+  1575→        .north-pole-journey .journey-path-progress {
+  1576→            fill: none;
+  1577→            stroke-linecap: round;
+  1578→        }
+  1579→
+  1580→        .north-pole-journey .journey-path-track {
+  1581→            stroke: rgba(248, 223, 175, 0.22);
+  1582→            stroke-width: 4;
+  1583→            stroke-dasharray: 8 14;
+  1584→        }
+  1585→
+  1586→        .north-pole-journey .journey-path-progress {
+  1587→            stroke: url(#journeyTrailGradient);
+  1588→            stroke-width: 6;
+  1589→            stroke-dasharray: 100;
+  1590→            stroke-dashoffset: calc(100 - (var(--journey-progress) * 100));
+  1591→            filter: drop-shadow(0 0 16px rgba(248, 223, 175, 0.55));
+  1592→            transition: stroke-dashoffset 0.14s linear;
+  1593→        }
+  1594→
+  1595→        .north-pole-journey .journey-comet {
+  1596→            position: absolute;
+  1597→            top: 48px;
+  1598→            left: calc(8% + (var(--journey-progress) * 84%));
+  1599→            z-index: 3;
+  1600→            width: 18px;
+  1601→            height: 18px;
+  1602→            border-radius: 50%;
+  1603→            background: var(--ks-star-gold);
+  1604→            box-shadow:
+  1605→                0 0 0 7px rgba(248, 223, 175, 0.16),
+  1606→                0 0 24px rgba(248, 223, 175, 0.92),
+  1607→                -28px 0 22px rgba(208, 165, 106, 0.55);
+  1608→            transform: translate(-50%, -50%);
+  1609→            transition: left 0.14s linear;
+  1610→            pointer-events: none;
+  1611→        }
+  1612→
+  1613→        .north-pole-journey .journey-stages {
+  1614→            position: relative;
+  1615→            z-index: 2;
+  1616→            display: grid;
+  1617→            grid-template-columns: repeat(5, minmax(0, 1fr));
+  1618→            gap: 18px;
+  1619→            align-items: start;
+  1620→            margin: 0;
+  1621→            padding: 0;
+  1622→            list-style: none;
+  1623→        }
+  1624→
+  1625→        .north-pole-journey .journey-stage {
+  1626→            position: relative;
+  1627→            padding: 20px 18px 22px;
+  1628→            border: 1px solid rgba(208, 165, 106, 0.26);
+  1629→            border-radius: 26px;
+  1630→            background: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.05) 100%);
+  1631→            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+  1632→            backdrop-filter: blur(12px);
+  1633→            transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+  1634→        }
+  1635→
+  1636→        .north-pole-journey .journey-stage:nth-child(1) { margin-top: 210px; }
+  1637→        .north-pole-journey .journey-stage:nth-child(2) { margin-top: 52px; }
+  1638→        .north-pole-journey .journey-stage:nth-child(3) { margin-top: 238px; }
+  1639→        .north-pole-journey .journey-stage:nth-child(4) { margin-top: 42px; }
+  1640→        .north-pole-journey .journey-stage:nth-child(5) { margin-top: 170px; }
+  1641→
+  1642→        .north-pole-journey .journey-stage.is-active {
+  1643→            border-color: rgba(248, 223, 175, 0.65);
+  1644→            background: linear-gradient(180deg, rgba(248, 223, 175, 0.16) 0%, rgba(255, 255, 255, 0.07) 100%);
+  1645→            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42), 0 0 34px rgba(208, 165, 106, 0.22);
+  1646→        }
+  1647→
+  1648→        .north-pole-journey .journey-stage.is-current {
+  1649→            transform: translateY(-8px);
+  1650→            border-color: var(--ks-star-gold);
+  1651→        }
+  1652→
+  1653→        .north-pole-journey .journey-stage-top {
+  1654→            display: flex;
+  1655→            align-items: center;
+  1656→            justify-content: space-between;
+  1657→            gap: 10px;
+  1658→            margin-bottom: 14px;
+  1659→        }
+  1660→
+  1661→        .north-pole-journey .journey-step-num {
+  1662→            display: inline-flex;
+  1663→            align-items: center;
+  1664→            justify-content: center;
+  1665→            min-width: 42px;
+  1666→            height: 30px;
+  1667→            padding: 0 11px;
+  1668→            border-radius: 999px;
+  1669→            background: rgba(248, 223, 175, 0.16);
+  1670→            color: var(--ks-star-gold);
+  1671→            font-size: 0.76rem;
+  1672→            font-weight: 800;
+  1673→            letter-spacing: 0.12em;
+  1674→        }
+  1675→
+  1676→        .north-pole-journey .journey-step-tag {
+  1677→            color: rgba(243, 237, 226, 0.72);
+  1678→            font-size: 0.7rem;
+  1679→            font-weight: 700;
+  1680→            letter-spacing: 0.12em;
+  1681→            text-transform: uppercase;
+  1682→        }
+  1683→
+  1684→        .north-pole-journey .journey-scene {
+  1685→            position: relative;
+  1686→            width: 128px;
+  1687→            height: 128px;
+  1688→            margin: 6px auto 18px;
+  1689→            border: 1px solid rgba(248, 223, 175, 0.34);
+  1690→            border-radius: 50%;
+  1691→            background:
+  1692→                radial-gradient(circle at 30% 24%, rgba(248, 223, 175, 0.26), transparent 42%),
+  1693→                radial-gradient(circle at 50% 70%, rgba(125, 10, 22, 0.45), rgba(30, 3, 7, 0.92));
+  1694→            box-shadow: inset 0 0 28px rgba(255, 255, 255, 0.08), 0 18px 34px rgba(0, 0, 0, 0.32);
+  1695→            overflow: hidden;
+  1696→        }
+  1697→
+  1698→        /* Scene 1: Letter & Quill */
+  1699→        .north-pole-journey .scene-paper {
+  1700→            position: absolute;
+  1701→            top: 24px;
+  1702→            left: 31px;
+  1703→            width: 66px;
+  1704→            height: 80px;
+  1705→            padding: 16px 11px;
+  1706→            border-radius: 12px;
+  1707→            background: var(--ks-ivory);
+  1708→            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+  1709→            transform: rotate(-6deg);
+  1710→        }
+  1711→
+  1712→        .north-pole-journey .scene-paper span {
+  1713→            display: block;
+  1714→            height: 5px;
+  1715→            margin-bottom: 8px;
+  1716→            border-radius: 999px;
+  1717→            background: rgba(125, 10, 22, 0.35);
+  1718→        }
+  1719→
+  1720→        .north-pole-journey .scene-paper span:nth-child(1) {
+  1721→            width: 72%;
+  1722→            background: var(--ks-primary-red);
+  1723→        }
+  1724→
+  1725→        .north-pole-journey .scene-quill {
+  1726→            position: absolute;
+  1727→            right: 20px;
+  1728→            bottom: 24px;
+  1729→            width: 44px;
+  1730→            height: 10px;
+  1731→            border-radius: 999px;
+  1732→            background: linear-gradient(90deg, var(--ks-star-gold), var(--ks-primary-red));
+  1733→            transform: rotate(-38deg);
+  1734→        }
+  1735→
+  1736→        /* Scene 2: Wax Sealed Envelope */
+  1737→        .north-pole-journey .scene-mail {
+  1738→            position: absolute;
+  1739→            top: 38px;
+  1740→            left: 25px;
+  1741→            width: 78px;
+  1742→            height: 54px;
+  1743→            border-radius: 12px;
+  1744→            background: linear-gradient(180deg, var(--ks-ivory) 0%, #E5D7C3 100%);
+  1745→            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.25);
+  1746→        }
+  1747→
+  1748→        .north-pole-journey .scene-mail::before {
+  1749→            content: "";
+  1750→            position: absolute;
+  1751→            inset: 0;
+  1752→            clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 18%, 50% 74%, 0 18%);
+  1753→            background: rgba(125, 10, 22, 0.25);
+  1754→        }
+  1755→
+  1756→        .north-pole-journey .scene-wax {
+  1757→            position: absolute;
+  1758→            top: 56px;
+  1759→            left: 54px;
+  1760→            width: 20px;
+  1761→            height: 20px;
+  1762→            border-radius: 50%;
+  1763→            background: radial-gradient(circle at 35% 30%, var(--ks-berry-red), var(--ks-primary-red));
+  1764→            box-shadow: 0 0 0 4px rgba(248, 223, 175, 0.35);
+  1765→        }
+  1766→
+  1767→        .north-pole-journey .scene-flight {
+  1768→            position: absolute;
+  1769→            top: 25px;
+  1770→            left: 16px;
+  1771→            right: 16px;
+  1772→            height: 36px;
+  1773→            border-top: 2px dashed rgba(248, 223, 175, 0.72);
+  1774→            border-radius: 50%;
+  1775→            transform: rotate(-12deg);
+  1776→        }
+  1777→
+  1778→        /* Scene 3: Candlelit Cabin Workshop */
+  1779→        .north-pole-journey .scene-cabin {
+  1780→            position: absolute;
+  1781→            bottom: 24px;
+  1782→            left: 33px;
+  1783→            width: 62px;
+  1784→            height: 48px;
+  1785→            border-radius: 8px;
+  1786→            background: linear-gradient(180deg, var(--ks-primary-red) 0%, var(--ks-shadow) 100%);
+  1787→        }
+  1788→
+  1789→        .north-pole-journey .scene-roof {
+  1790→            position: absolute;
+  1791→            top: -18px;
+  1792→            left: -8px;
+  1793→            width: 78px;
+  1794→            height: 26px;
+  1795→            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  1796→            background: linear-gradient(180deg, var(--ks-ivory) 0%, var(--ks-gold) 100%);
+  1797→        }
+  1798→
+  1799→        .north-pole-journey .scene-window,
+  1800→        .north-pole-journey .scene-door {
+  1801→            position: absolute;
+  1802→            bottom: 10px;
+  1803→            border-radius: 6px;
+  1804→            background: var(--ks-star-gold);
+  1805→            box-shadow: 0 0 16px rgba(248, 223, 175, 0.9);
+  1806→        }
+  1807→
+  1808→        .north-pole-journey .scene-window {
+  1809→            left: 11px;
+  1810→            width: 16px;
+  1811→            height: 16px;
+  1812→        }
+  1813→
+  1814→        .north-pole-journey .scene-door {
+  1815→            right: 12px;
+  1816→            bottom: 0;
+  1817→            width: 16px;
+  1818→            height: 27px;
+  1819→            border-radius: 8px 8px 0 0;
+  1820→        }
+  1821→
+  1822→        .north-pole-journey .scene-tree {
+  1823→            position: absolute;
+  1824→            bottom: 22px;
+  1825→            width: 24px;
+  1826→            height: 44px;
+  1827→            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  1828→            background: linear-gradient(180deg, #355942 0%, var(--ks-evergreen) 100%);
+  1829→        }
+  1830→
+  1831→        .north-pole-journey .scene-tree-left { left: 14px; }
+  1832→        .north-pole-journey .scene-tree-right { right: 14px; }
+  1833→
+  1834→        /* Scene 4: Live Santa Call Screen */
+  1835→        .north-pole-journey .scene-screen {
+  1836→            position: absolute;
+  1837→            top: 28px;
+  1838→            left: 24px;
+  1839→            width: 80px;
+  1840→            height: 58px;
+  1841→            border: 2px solid rgba(248, 223, 175, 0.85);
+  1842→            border-radius: 14px;
+  1843→            background: linear-gradient(180deg, var(--ks-primary-red) 0%, var(--ks-shadow) 100%);
+  1844→            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+  1845→        }
+  1846→
+  1847→        .north-pole-journey .scene-santa-hat {
+  1848→            position: absolute;
+  1849→            top: 10px;
+  1850→            left: 25px;
+  1851→            width: 30px;
+  1852→            height: 20px;
+  1853→            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  1854→            background: var(--ks-berry-red);
+  1855→        }
+  1856→
+  1857→        .north-pole-journey .scene-santa-face {
+  1858→            position: absolute;
+  1859→            top: 26px;
+  1860→            left: 29px;
+  1861→            width: 22px;
+  1862→            height: 22px;
+  1863→            border-radius: 50%;
+  1864→            background: var(--ks-star-gold);
+  1865→            box-shadow: 0 10px 0 4px var(--ks-ivory);
+  1866→        }
+  1867→
+  1868→        .north-pole-journey .scene-wave {
+  1869→            position: absolute;
+  1870→            inset: 14px;
+  1871→            border: 1px solid rgba(248, 223, 175, 0.38);
+  1872→            border-radius: 50%;
+  1873→            animation: ks-journey-pulse 2.6s ease-out infinite;
+  1874→        }
+  1875→
+  1876→        .north-pole-journey .scene-wave-two {
+  1877→            inset: 6px;
+  1878→            animation-delay: 1.1s;
+  1879→        }
+  1880→
+  1881→        /* Scene 5: Keepsake Memory Frame */
+  1882→        .north-pole-journey .scene-photo {
+  1883→            position: absolute;
+  1884→            top: 25px;
+  1885→            left: 28px;
+  1886→            width: 72px;
+  1887→            height: 78px;
+  1888→            border: 5px solid var(--ks-ivory);
+  1889→            border-bottom-width: 15px;
+  1890→            border-radius: 14px;
+  1891→            background:
+  1892→                radial-gradient(circle at 50% 34%, var(--ks-star-gold) 0 11px, transparent 12px),
+  1893→                linear-gradient(180deg, var(--ks-primary-red) 0%, var(--ks-evergreen) 100%);
+  1894→            transform: rotate(5deg);
+  1895→            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28);
+  1896→        }
+  1897→
+  1898→        .north-pole-journey .scene-heart {
+  1899→            position: absolute;
+  1900→            top: 16px;
+  1901→            left: 22px;
+  1902→            width: 20px;
+  1903→            height: 20px;
+  1904→            border-radius: 50%;
+  1905→            background: var(--ks-berry-red);
+  1906→            box-shadow: 0 0 16px rgba(176, 23, 42, 0.65);
+  1907→        }
+  1908→
+  1909→        .north-pole-journey .scene-ribbon {
+  1910→            position: absolute;
+  1911→            right: 20px;
+  1912→            bottom: 22px;
+  1913→            width: 30px;
+  1914→            height: 30px;
+  1915→            border: 2px solid var(--ks-star-gold);
+  1916→            border-radius: 50%;
+  1917→        }
+  1918→
+  1919→        @keyframes ks-journey-pulse {
+  1920→            0% { transform: scale(0.86); opacity: 0.72; }
+  1921→            100% { transform: scale(1.08); opacity: 0; }
+  1922→        }
+  1923→
+  1924→        .north-pole-journey .journey-stage h3 {
+  1925→            margin: 0;
+  1926→            color: var(--ks-ivory);
+  1927→            font-family: var(--font-serif);
+  1928→            font-size: 1.24rem;
+  1929→            font-weight: 700;
+  1930→            line-height: 1.22;
+  1931→        }
+  1932→
+  1933→        .north-pole-journey .journey-stage p {
+  1934→            margin: 10px 0 0;
+  1935→            color: rgba(243, 237, 226, 0.8);
+  1936→            font-size: 0.92rem;
+  1937→            line-height: 1.62;
+  1938→        }
+  1939→
+  1940→        .north-pole-journey .journey-ending {
+  1941→            display: flex;
+  1942→            flex-wrap: wrap;
+  1943→            align-items: center;
+  1944→            justify-content: space-between;
+  1945→            gap: 18px 28px;
+  1946→            max-width: 960px;
+  1947→            margin: 48px auto 0;
+  1948→            padding: 24px 30px;
+  1949→            border: 1px solid rgba(208, 165, 106, 0.38);
+  1950→            border-radius: 24px;
+  1951→            background: rgba(255, 255, 255, 0.08);
+  1952→            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  1953→            backdrop-filter: blur(12px);
+  1954→        }
+  1955→
+  1956→        .north-pole-journey .journey-ending p {
+  1957→            margin: 0;
+  1958→            color: var(--ks-ivory);
+  1959→            font-family: var(--font-serif);
+  1960→            font-size: 1.08rem;
+  1961→            line-height: 1.6;
+  1962→        }
+  1963→
+  1964→        .north-pole-journey .journey-ending strong {
+  1965→            color: var(--ks-star-gold);
+  1966→        }
+  1967→
+  1968→        .north-pole-journey .journey-cta {
+  1969→            display: inline-flex;
+  1970→            align-items: center;
+  1971→            justify-content: center;
+  1972→            gap: 12px;
+  1973→            padding: 15px 26px;
+  1974→            border-radius: 999px;
+  1975→            background: linear-gradient(135deg, var(--ks-gold) 0%, var(--ks-star-gold) 100%);
+  1976→            color: var(--ks-shadow) !important;
+  1977→            font-size: 0.88rem;
+  1978→            font-weight: 800;
+  1979→            letter-spacing: 0.06em;
+  1980→            text-transform: uppercase;
+  1981→            white-space: nowrap;
+  1982→            box-shadow: 0 18px 34px rgba(0, 0, 0, 0.32);
+  1983→            transition: transform 0.2s ease;
+  1984→        }
+  1985→
+  1986→        .north-pole-journey .journey-cta:hover {
+  1987→            transform: translateY(-2px);
+  1988→        }
+  1989→
+  1990→        @media (max-width: 1120px) {
+  1991→            .north-pole-journey .journey-map { min-height: auto; }
+  1992→            .north-pole-journey .journey-path,
+  1993→            .north-pole-journey .journey-comet { display: none; }
+  1994→            .north-pole-journey .journey-stages {
+  1995→                grid-template-columns: repeat(2, minmax(0, 1fr));
+  1996→            }
+  1997→            .north-pole-journey .journey-stage:nth-child(n) { margin-top: 0; }
+  1998→        }
+  1999→
+  2000→        @media (max-width: 680px) {
+
+[showing lines 1-2000 of 5081; use offset=2001 with limit to continue reading]
