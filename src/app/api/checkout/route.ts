@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
-import { getStripe, isStripeConfigured, getAppUrl } from '@/lib/stripe'
+import { getStripe, getAppUrl } from '@/lib/stripe'
+import { createSandboxPaymentToken, getPaymentMode, isStripeConfigured } from '@/lib/payments'
 import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 
 const schema = z.object({ bookingId: z.string().min(10) })
 
-// POST /api/checkout — create a Stripe Checkout session for a reservation.
-// Real Stripe path activates automatically when STRIPE_SECRET_KEY is present.
-// Without keys the API answers 503 PAYMENTS_NOT_CONFIGURED and the reservation
-// stays saved for manual payment confirmation in the admin panel.
+// POST /api/checkout — start a hosted checkout for a reservation.
+//
+// mode = stripe_live | stripe_test (STRIPE_SECRET_KEY set)
+//   → real Stripe Checkout session (same code path for both; the key prefix
+//     decides whether Stripe charges real money or runs its test network).
+//
+// mode = sandbox (no STRIPE_SECRET_KEY)
+//   → built-in test gateway page at /checkout/sandbox. It exercises the exact
+//     same markOrderPaid fulfillment pipeline, so test payments work with zero
+//     configuration. Switching to Stripe is an env-only change.
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
   const rl = rateLimit(`checkout:${ip}`, 12, 60_000)
@@ -48,22 +55,27 @@ export async function POST(req: NextRequest) {
     }
 
     if (!isStripeConfigured()) {
-      return NextResponse.json(
-        {
-          code: 'PAYMENTS_NOT_CONFIGURED',
-          error:
-            'Online payments are not switched on yet. Your reservation is safely stored — our team will contact you to complete the ritual.',
-        },
-        { status: 503 }
-      )
+      // Sandbox gateway — a real, self-hosted test checkout that feeds the
+      // production fulfillment pipeline (markOrderPaid). Used until Stripe
+      // keys are provided; nothing here is dead-ended.
+      const token = createSandboxPaymentToken(openOrder.id, openOrder.amountCents)
+      return NextResponse.json({
+        url: `/checkout/sandbox?t=${encodeURIComponent(token)}`,
+        mode: 'sandbox',
+      })
     }
 
     const stripe = await getStripe()
     if (!stripe) {
-      return NextResponse.json({ code: 'PAYMENTS_NOT_CONFIGURED', error: 'Stripe unavailable' }, { status: 503 })
+      const token = createSandboxPaymentToken(openOrder.id, openOrder.amountCents)
+      return NextResponse.json({
+        url: `/checkout/sandbox?t=${encodeURIComponent(token)}`,
+        mode: 'sandbox',
+      })
     }
 
     const appUrl = getAppUrl()
+    const mode = getPaymentMode()
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer_email: booking.parentEmail,
@@ -82,7 +94,11 @@ export async function POST(req: NextRequest) {
           },
         },
       ],
-      success_url: `${appUrl}/?checkout=success&ref=${booking.reference}`,
+      // session_id template lets /api/checkout/confirm verify the payment on
+      // return — fulfillment no longer depends solely on webhook reachability
+      // (matters for local test mode; the signed webhook remains the source of
+      // truth in production and both paths are idempotent).
+      success_url: `${appUrl}/?checkout=success&ref=${booking.reference}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/?checkout=cancelled&ref=${booking.reference}`,
     })
 
@@ -91,7 +107,7 @@ export async function POST(req: NextRequest) {
       data: { sessionRef: session.id, provider: 'stripe' },
     })
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json({ url: session.url, mode })
   } catch (e) {
     console.error('POST /api/checkout', e)
     return NextResponse.json({ error: 'Failed to start checkout' }, { status: 500 })

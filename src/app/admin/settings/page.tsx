@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Database, Loader2, Plus, Save, Settings2 } from 'lucide-react'
+import { CreditCard, Database, Loader2, Plus, Save, Settings2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { get, put } from '@/components/admin/api'
+import { useAdmin } from '@/components/admin/admin-provider'
 import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import { formatDateTime } from '@/components/admin/format'
@@ -37,6 +38,7 @@ const INTEGRATION_KEYS = [
 ]
 
 export default function AdminSettingsPage() {
+  const { payments } = useAdmin()
   const [rows, setRows] = useState<SettingRow[] | null>(null)
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(true)
@@ -132,6 +134,109 @@ export default function AdminSettingsPage() {
       />
 
       <div className="mb-6 space-y-4">
+        {/* Active payment mode + go-live checklist */}
+        <Card className="border-[#D0A56A]/40 bg-white">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#7D0A16]/10">
+                <CreditCard className="size-5 text-[#7D0A16]" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#7D0A16]/60">
+                  Active payment mode
+                </p>
+                <p className="font-serif text-lg font-semibold text-[#7D0A16]">
+                  {payments.mode === 'sandbox'
+                    ? 'Sandbox Gateway (built-in test checkout)'
+                    : payments.mode === 'stripe_test'
+                      ? 'Stripe — TEST mode (test cards, no real charges)'
+                      : 'Stripe — LIVE mode (real charges)'}
+                </p>
+              </div>
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
+                  payments.mode === 'stripe_live'
+                    ? 'border-emerald-600/50 bg-emerald-600/10 text-emerald-800'
+                    : payments.mode === 'stripe_test'
+                      ? 'border-[#D0A56A]/70 bg-[#D0A56A]/10 text-[#7D0A16]'
+                      : 'border-amber-500/60 bg-amber-500/10 text-amber-700'
+                }`}
+              >
+                <span
+                  className={`size-1.5 rounded-full ${
+                    payments.mode === 'stripe_live'
+                      ? 'bg-emerald-600'
+                      : payments.mode === 'stripe_test'
+                        ? 'bg-[#D0A56A]'
+                        : 'bg-amber-500'
+                  }`}
+                />
+                {payments.mode === 'sandbox'
+                  ? 'Test payments available now'
+                  : payments.mode === 'stripe_test'
+                    ? 'Test payments via Stripe'
+                    : 'Battle mode'}
+              </span>
+            </div>
+
+            <Separator className="my-4 bg-[#D0A56A]/30" />
+
+            <ol className="list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-[#3A0008]/80">
+              {payments.mode === 'sandbox' ? (
+                <>
+                  <li>
+                    Test payments work <strong>right now</strong>: reserve a ritual on the site —
+                    the built-in sandbox checkout opens with card{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">4242 4242 4242 4242</code>{' '}
+                    (succeeds) and{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">4000 0000 0000 0002</code>{' '}
+                    (declines).
+                  </li>
+                  <li>
+                    To switch to real Stripe TEST: put your{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">sk_test_…</code>{' '}
+                    key (and optionally{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">STRIPE_WEBHOOK_SECRET</code>)
+                    into the environment, then restart. Stripe test cards flow through the same
+                    pipeline.
+                  </li>
+                  <li>
+                    To go LIVE: replace with{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">sk_live_…</code>{' '}
+                    and the live{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">whsec_…</code>{' '}
+                    webhook secret. No code changes — the mode switches automatically.
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    Stripe is active in{' '}
+                    <strong>{payments.mode === 'stripe_live' ? 'LIVE' : 'TEST'}</strong> mode. Test
+                    the flow on the site — checkout opens on Stripe&apos;s hosted page.
+                  </li>
+                  <li>
+                    Webhook endpoint:{' '}
+                    <code className="rounded bg-[#7D0A16]/5 px-1 font-mono text-xs">/api/webhooks/stripe</code>{' '}
+                    —{' '}
+                    {payments.webhookConfigured ? (
+                      <span className="font-semibold text-emerald-700">secret configured</span>
+                    ) : (
+                      <span className="font-semibold text-amber-700">not configured (payments still confirm on return)</span>
+                    )}
+                  </li>
+                  {payments.mode === 'stripe_live' ? (
+                    <li className="font-semibold text-[#7D0A16]">
+                      Battle mode: verify the live webhook secret and run one small live-amount
+                      order before announcing the ritual.
+                    </li>
+                  ) : null}
+                </>
+              )}
+            </ol>
+          </CardContent>
+        </Card>
+
         <Alert className="border-[#D0A56A]/50 bg-[#D0A56A]/10 text-[#3A0008]">
           <Settings2 className="size-4 text-[#7D0A16]" />
           <AlertTitle className="font-serif text-[#7D0A16]">Integration environment keys</AlertTitle>

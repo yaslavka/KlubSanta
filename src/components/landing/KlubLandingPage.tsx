@@ -14,6 +14,7 @@ import MagicPreview from './MagicPreview'
 import NewsletterSection from './NewsletterSection'
 import SiteFooter from './SiteFooter'
 import RitualModal from './RitualModal'
+import CheckoutBanner from './CheckoutBanner'
 import type { LandingFaq, LandingProduct } from './types'
 
 type KlubLandingPageProps = {
@@ -23,6 +24,9 @@ type KlubLandingPageProps = {
   heroVideoExists: boolean
   previewVideoExists: boolean
   manifestoExists: boolean
+  checkoutStatus?: 'success' | 'cancelled' | null
+  checkoutRef?: string | null
+  checkoutSessionId?: string | null
 }
 
 export default function KlubLandingPage({
@@ -32,10 +36,22 @@ export default function KlubLandingPage({
   heroVideoExists,
   previewVideoExists,
   manifestoExists,
+  checkoutStatus = null,
+  checkoutRef = null,
+  checkoutSessionId = null,
 }: KlubLandingPageProps): React.JSX.Element {
   return (
     <RitualModalProvider>
       <SiteHeader />
+      {checkoutStatus ? (
+        <div className="px-4 pt-4">
+          <CheckoutBanner
+            status={checkoutStatus}
+            reference={checkoutRef}
+            sessionId={checkoutSessionId}
+          />
+        </div>
+      ) : null}
       <Hero heroVideoExists={heroVideoExists} />
       <ManifestoSection />
       <OffersSection products={products} />

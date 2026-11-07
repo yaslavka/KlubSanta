@@ -25,7 +25,46 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Toaster } from '@/components/ui/sonner'
 import { post } from './api'
 import { useAdmin } from './admin-provider'
+import type { PaymentMode } from './admin-provider'
 import { cn } from '@/lib/utils'
+
+const PAYMENT_MODE_BADGE: Record<PaymentMode, { label: string; className: string; dot: string }> = {
+  sandbox: {
+    label: 'Sandbox payments',
+    className: 'border-amber-500/60 bg-amber-500/10 text-amber-700',
+    dot: 'bg-amber-500',
+  },
+  stripe_test: {
+    label: 'Stripe · TEST',
+    className: 'border-[#D0A56A]/70 bg-[#D0A56A]/10 text-[#7D0A16]',
+    dot: 'bg-[#D0A56A]',
+  },
+  stripe_live: {
+    label: 'Stripe · LIVE',
+    className: 'border-emerald-600/50 bg-emerald-600/10 text-emerald-800',
+    dot: 'bg-emerald-600',
+  },
+}
+
+function PaymentsModeBadge({ dark = false }: { dark?: boolean }) {
+  const { payments } = useAdmin()
+  const badge = PAYMENT_MODE_BADGE[payments.mode]
+  return (
+    <a
+      href="/admin/settings"
+      title={`Active payment mode: ${badge.label}. Click to open Settings.`}
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider transition-opacity hover:opacity-80',
+        dark
+          ? 'border-[#D0A56A]/50 bg-white/5 text-[#D0A56A]'
+          : badge.className
+      )}
+    >
+      <span className={cn('size-1.5 rounded-full', dark ? 'bg-[#D0A56A]' : badge.dot)} aria-hidden="true" />
+      {badge.label}
+    </a>
+  )
+}
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -155,6 +194,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             {admin.role}
           </Badge>
         ) : null}
+        <div className="pb-2">
+          <PaymentsModeBadge dark />
+        </div>
         <LogoutButton />
       </aside>
 
@@ -198,6 +240,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <div className="hidden text-right sm:block">
               <AdminIdentity />
             </div>
+            <PaymentsModeBadge />
             {admin ? (
               <Badge
                 variant="outline"

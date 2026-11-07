@@ -13,7 +13,26 @@ function mediaFileExists(relativePath: string): boolean {
   return fs.existsSync(path.join(process.cwd(), 'public', relativePath))
 }
 
-export default async function HomePage(): Promise<React.JSX.Element> {
+type PageSearchParams = {
+  checkout?: string | string[]
+  ref?: string | string[]
+  session_id?: string | string[]
+}
+
+function first(value: string | string[] | undefined): string | null {
+  const v = Array.isArray(value) ? value[0] : value
+  return v && v.length > 0 ? v : null
+}
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<PageSearchParams>
+}): Promise<React.JSX.Element> {
+  const params = await searchParams
+  const rawCheckout = first(params.checkout)
+  const checkoutStatus =
+    rawCheckout === 'success' ? ('success' as const) : rawCheckout === 'cancelled' ? ('cancelled' as const) : null
   const [productRows, faqRows, contactSetting] = await Promise.all([
     db.product.findMany({ where: { active: true }, orderBy: { sortOrder: 'asc' } }),
     db.faq.findMany({ where: { active: true }, orderBy: { sortOrder: 'asc' } }),
@@ -56,6 +75,9 @@ export default async function HomePage(): Promise<React.JSX.Element> {
           heroVideoExists={mediaFileExists('media/hero.mp4')}
           previewVideoExists={mediaFileExists('media/preview.mp4')}
           manifestoExists={mediaFileExists('media/manifesto.mp3')}
+          checkoutStatus={checkoutStatus}
+          checkoutRef={first(params.ref)}
+          checkoutSessionId={first(params.session_id)}
         />
       </div>
     </div>

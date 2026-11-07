@@ -4,13 +4,33 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AdminUser } from './types'
 
+export type PaymentMode = 'stripe_live' | 'stripe_test' | 'sandbox'
+
+export interface PaymentsStatus {
+  mode: PaymentMode
+  stripeConfigured: boolean
+  webhookConfigured: boolean
+}
+
 interface AdminContextValue {
   admin: AdminUser | null
+  /** Payment platform status (sandbox / stripe test / stripe live). */
+  payments: PaymentsStatus
   /** Force a re-check of /api/admin/auth/me (e.g. after profile changes). */
   refresh: () => void
 }
 
-const AdminContext = createContext<AdminContextValue>({ admin: null, refresh: () => {} })
+const DEFAULT_PAYMENTS: PaymentsStatus = {
+  mode: 'sandbox',
+  stripeConfigured: false,
+  webhookConfigured: false,
+}
+
+const AdminContext = createContext<AdminContextValue>({
+  admin: null,
+  payments: DEFAULT_PAYMENTS,
+  refresh: () => {},
+})
 
 export function useAdmin(): AdminContextValue {
   return useContext(AdminContext)
@@ -33,6 +53,7 @@ function Splash() {
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const [admin, setAdmin] = useState<AdminUser | null>(null)
+  const [payments, setPayments] = useState<PaymentsStatus>(DEFAULT_PAYMENTS)
   const [ready, setReady] = useState(false)
   const [attempt, setAttempt] = useState(0)
 
@@ -53,6 +74,10 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         if (maybeAdmin !== null && typeof maybeAdmin === 'object') {
           if (!cancelled) {
             setAdmin(maybeAdmin as AdminUser)
+            const maybePayments = (json as { payments?: unknown } | null)?.payments
+            if (maybePayments !== null && typeof maybePayments === 'object') {
+              setPayments(maybePayments as PaymentsStatus)
+            }
             setReady(true)
           }
           return
@@ -75,8 +100,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   }, [router, attempt])
 
   const value = useMemo<AdminContextValue>(
-    () => ({ admin, refresh: () => setAttempt((a) => a + 1) }),
-    [admin]
+    () => ({ admin, payments, refresh: () => setAttempt((a) => a + 1) }),
+    [admin, payments]
   )
 
   if (!ready || !admin) return <Splash />
