@@ -40,7 +40,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { get, patch } from '@/components/admin/api'
-import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
+import { CardTableSkeleton, EmptyState, ErrorState } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import { OrderStatusBadge } from '@/components/admin/status-badge'
 import { formatDateTime, truncate } from '@/components/admin/format'
@@ -222,7 +222,7 @@ export default function AdminOrdersPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !data ? (
-            <TableRowsSkeleton cols={7} />
+            <CardTableSkeleton cols={7} />
           ) : data && data.items.length === 0 ? (
             <EmptyState
               title="No orders match these filters"

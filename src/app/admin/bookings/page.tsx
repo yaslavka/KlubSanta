@@ -20,7 +20,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { get, patch } from '@/components/admin/api'
-import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
+import { CardTableSkeleton, EmptyState, ErrorState } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import { BookingStatusBadge, JobStatusBadge, OrderStatusBadge } from '@/components/admin/status-badge'
 import { formatDateTime, truncate } from '@/components/admin/format'
@@ -376,7 +376,7 @@ export default function AdminBookingsPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !data ? (
-            <TableRowsSkeleton cols={8} />
+            <CardTableSkeleton cols={8} />
           ) : data && data.items.length === 0 ? (
             <EmptyState
               title="No reservations match these filters"

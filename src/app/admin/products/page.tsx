@@ -31,7 +31,7 @@ import { Switch } from '@/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { del, get, patch, post } from '@/components/admin/api'
-import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
+import { CardTableSkeleton, EmptyState, ErrorState } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import { formatMoney } from '@/lib/site'
 import type { Product } from '@/components/admin/types'
@@ -278,7 +278,7 @@ export default function AdminProductsPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !products ? (
-            <TableRowsSkeleton cols={7} />
+            <CardTableSkeleton cols={7} />
           ) : products && products.length === 0 ? (
             <EmptyState
               title="No rituals yet"

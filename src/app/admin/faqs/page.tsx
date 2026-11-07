@@ -30,7 +30,7 @@ import { Switch } from '@/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { del, get, patch, post } from '@/components/admin/api'
-import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
+import { CardTableSkeleton, EmptyState, ErrorState } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import type { Faq } from '@/components/admin/types'
 
@@ -192,7 +192,7 @@ export default function AdminFaqsPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !faqs ? (
-            <TableRowsSkeleton cols={4} />
+            <CardTableSkeleton cols={4} />
           ) : faqs && faqs.length === 0 ? (
             <EmptyState
               title="No questions yet"

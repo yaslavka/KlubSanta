@@ -19,7 +19,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { del, get } from '@/components/admin/api'
-import { EmptyState, ErrorState, TableRowsSkeleton } from '@/components/admin/states'
+import { CardTableSkeleton, EmptyState, ErrorState } from '@/components/admin/states'
 import { PageHeader } from '@/components/admin/page-header'
 import { formatDateTime } from '@/components/admin/format'
 import type { Subscriber } from '@/components/admin/types'
@@ -116,7 +116,7 @@ export default function AdminSubscribersPage() {
           {error ? (
             <ErrorState message={error} onRetry={() => void load()} />
           ) : loading && !items ? (
-            <TableRowsSkeleton cols={5} />
+            <CardTableSkeleton cols={5} />
           ) : items && items.length === 0 ? (
             <EmptyState
               title="No subscribers match"

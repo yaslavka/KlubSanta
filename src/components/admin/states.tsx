@@ -17,7 +17,7 @@ export function ListSkeleton({ rows = 5 }: { rows?: number }) {
   )
 }
 
-/** Table-body loading skeleton (keeps table headers visible). */
+/** Table-body loading skeleton (keeps table headers visible). Must be rendered inside <TableBody>. */
 export function TableRowsSkeleton({ rows = 6, cols = 5 }: { rows?: number; cols?: number }) {
   return (
     <>
@@ -31,6 +31,34 @@ export function TableRowsSkeleton({ rows = 6, cols = 5 }: { rows?: number; cols?
         </tr>
       ))}
     </>
+  )
+}
+
+/**
+ * Div-based table loading skeleton — HTML-valid anywhere (e.g. directly inside
+ * CardContent). Use this instead of TableRowsSkeleton when there is no wrapping
+ * <table>/<tbody> around the placeholder.
+ */
+export function CardTableSkeleton({ rows = 6, cols = 5 }: { rows?: number; cols?: number }) {
+  return (
+    <div
+      className="overflow-hidden rounded-lg border border-[#D0A56A]/30 bg-white/60"
+      aria-busy="true"
+      aria-label="Loading"
+    >
+      <div className="flex gap-3 border-b border-[#D0A56A]/30 bg-[#7D0A16]/[0.04] px-3 py-3">
+        {Array.from({ length: cols }).map((_, c) => (
+          <Skeleton key={c} className="h-4 min-w-0 flex-1 bg-[#7D0A16]/10" />
+        ))}
+      </div>
+      {Array.from({ length: rows }).map((_, r) => (
+        <div key={r} className="flex gap-3 border-b border-[#D0A56A]/20 px-3 py-3.5 last:border-b-0">
+          {Array.from({ length: cols }).map((_, c) => (
+            <Skeleton key={c} className="h-5 min-w-0 flex-1 bg-[#7D0A16]/[0.07]" />
+          ))}
+        </div>
+      ))}
+    </div>
   )
 }
 
